@@ -1,23 +1,32 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}All categories
+{% block title %}
+	{{parent()}}
+	- Catégories
+{% endblock %}
+
+{% block page_title %}
+	<h1>Toutes les catégories
+	</h1>
 {% endblock %}
 
 {% block body %}
-	<h1>Toutes les catégories
-	</h1>
-	{% for category in categories %}
-		<div>
-			<h2>{{ loop.index }}
-				-
-				<a href="{{ path('category_show', {categoryName: category.name}) }}">{{ category.name }}</a>
-			</h2>
-		</div>
-	{% else %}
-		Aucune catégorie trouvée.
-	{% endfor %}
 
-	<a href="{{ path('app_index') }}">
+	<ul class="list-group list-group-flush">
+		{% for category in categories %}
+			<li class="list-group-item">
+				<h2 class="h3">
+					<a href="{{ path('category_show', {categoryName: category.name}) }}" class="text-decoration-none">{{ category.name }}</a>
+				</h2>
+			</li>
+		{% else %}
+			<p class="m-5">
+				Aucune catégorie trouvée.
+			</p>
+		{% endfor %}
+	</ul>
+
+	<a href="{{ path('app_index') }}" class="btn btn-secondary m-4" role="button">
 		Retour à l'accueil
 	</a>
 {% endblock %}
