@@ -23,13 +23,28 @@
 					</div>
 				</div>
 				<div class=" card-body">
-					<h2 class="card-title">{{ program.title }}</h2>
-					<p class="card-text">{{ program.summary }}</p>
 					<a href="{{ path("category_index", { name: program.category }) }}">
-						<span class="badge bg-light text-dark">
+						<span class="badge bg-light text-dark my-3">
 							{{ program.category.name }}
 						</span>
 					</a>
+					<h2 class="card-title">{{ program.title }}</h2>
+					<p class="card-text">{{ program.summary }}</p>
+					<hr/>
+					<p class="h5">Saisons</p>
+					<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+						<div class="btn-group me-2 flex-wrap" role="group" aria-label="First group">
+							{% for season in seasons %}
+								<a href="{{ path("program_season_show", { programId: program.id, seasonId: season.id }) }}" class="btn btn-secondary" role="button">
+									{{season.number}}
+								</a>
+							{% else %}
+								<p class="m-3">
+									Aucune saison trouvée.
+								</p>
+							{% endfor %}
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
