@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{parent()}}
+	- Catégories - Création
+{% endblock %}
+
+{% block page_title %}
+	<h1>Créer une nouvelle catégorie
+	</h1>
+{% endblock %}
+
+{% form_theme form 'bootstrap_5_layout.html.twig' %}
+
+{% block body %}
+	{{ form_start(form) }}
+	<div class="form-control mb-3">
+		{{ form_widget(form) }}
+		<input type='submit' value='Créer catégorie' class="btn btn-primary my-4">
+	</div>
+	{{ form_end(form) }}
+
+	<a href="{{ path('app_index') }}" class="btn btn-secondary m-4" role="button">
+		Retour à l'accueil
+	</a>
+
+{% endblock %}
