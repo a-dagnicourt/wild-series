@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{parent()}}
+	-
+	{{program.title}}
+	- Saison
+	{{season.number}}
+	- Episode
+	{{episode.number}}
+{% endblock %}
+
+{% block page_title %}
+	<a href="{{ path("program_season_show", { program: program.id, season: season.id }) }}" class="text-decoration-none">
+		<h1>{{program.title}}
+			-
+															Saison
+			{{season.number}}
+		</h1>
+	</a>
+{% endblock %}
+
+{% block body %}
+	<div class="row">
+		<div class="col-12 col-lg-8">
+			<div class="card my-5">
+				<div class=" card-body">
+					<h2 class="card-title">{{ episode.title }}</h2>
+					<p class="card-text">Episode n°{{ episode.number }}</p>
+					<p class="card-text">{{ episode.summary }}</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<a href="{{ path('app_index') }}" class="btn btn-secondary m-4" role="button">
+		Retour à l'accueil
+	</a>
+{% endblock %}

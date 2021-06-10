@@ -4,12 +4,12 @@
 	{{parent()}}
 	-
 	{{program.title}}
-	Saison
+	- Saison
 	{{season.number}}
 {% endblock %}
 
 {% block page_title %}
-	<a href="{{ path("program_show", { id: program.id }) }}" class="text-decoration-none">
+	<a href="{{ path("program_show", { program: program.id }) }}" class="text-decoration-none">
 		<h1>{{program.title}}
 		</h1>
 	</a>
@@ -36,6 +36,7 @@
 								<div id="flush-collapse-{{episode.id}}" class="accordion-collapse collapse" aria-labelledby="flush-heading-{{episode.id}}" data-bs-parent="#accordionFlushExample">
 									<div class="accordion-body">
 										<p>{{ episode.summary }}</p>
+										<a href="{{ path("program_episode_show", { program: program.id, season: season.id, episode: episode.id }) }}" class="btn btn-secondary m-4" role="button">Voir la fiche</a>
 									</div>
 								</div>
 							</div>

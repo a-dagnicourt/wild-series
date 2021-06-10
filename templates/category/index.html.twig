@@ -16,7 +16,7 @@
 		{% for category in categories %}
 			<li class="list-group-item">
 				<h2 class="h3">
-					<a href="{{ path('category_show', {categoryName: category.name}) }}" class="text-decoration-none">{{ category.name }}</a>
+					<a href="{{ path('category_show', {category: category.id}) }}" class="text-decoration-none">{{ category.name }}</a>
 				</h2>
 			</li>
 		{% else %}
