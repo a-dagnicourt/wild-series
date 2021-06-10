@@ -11,6 +11,8 @@
 {% endblock %}
 
 {% block body %}
+	<a href="{{ path('episode_new') }}" class="btn btn-success mb-5" role="button">Créer</a>
+
 	<div class="accordion accordion-flush" id="episodeAccordion">
 		{% for episode in episodes %}
 			<div class="accordion-item">
@@ -44,6 +46,4 @@
 			</tr>
 		{% endfor %}
 	</div>
-
-	<a href="{{ path('episode_new') }}">Create new</a>
 {% endblock %}

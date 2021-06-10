@@ -11,12 +11,13 @@
 {% endblock %}
 
 {% block body %}
+	<a href="{{ path('category_new') }}" class="btn btn-success mb-5" role="button">Créer</a>
 
 	<ul class="list-group list-group-flush">
 		{% for category in categories %}
 			<li class="list-group-item">
 				<h2 class="h3">
-					<a href="{{ path('category_show', {categoryName: category.name}) }}" class="text-decoration-none">{{ category.name }}</a>
+					<a href="{{ path('category_show', {'id' : category.id}) }}" class="text-decoration-none">{{ category.name }}</a>
 				</h2>
 			</li>
 		{% else %}

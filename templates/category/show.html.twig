@@ -11,11 +11,11 @@
 		<h1>{{category.name}}
 		</h1>
 	</a>
-	<p class="text-muted">3 derniers programmes</p>
 {% endblock %}
 
 {% block body %}
-
+	<a href="{{ path('category_edit', {'id': category.id}) }}" class="btn btn-warning" role="button">Editer</a>
+	{{ include('category/_delete_form.html.twig') }}
 	<div class="accordion accordion-flush" id="programAccordion">
 		{% for program in programs %}
 			<div class="accordion-item">
@@ -26,11 +26,6 @@
 				</h2>
 				<div id="flush-collapse-{{program.id}}" class="accordion-collapse collapse" aria-labelledby="flush-heading-{{program.id}}" data-bs-parent="#accordionFlushExample">
 					<div class="accordion-body">
-						<a href="{{ path("category_index", { name: program.category }) }}">
-							<span class="badge bg-light text-dark mb-4">
-								{{ program.category.name }}
-							</span>
-						</a>
 						<p>{{ program.summary }}</p>
 						<a href="{{ path("program_show", { id: program.id }) }}" class="btn btn-secondary m-4" role="button">Voir la fiche</a>
 					</div>
@@ -43,7 +38,7 @@
 		{% endfor %}
 	</div>
 
-	<a href="{{ path('app_index') }}" class="btn btn-secondary m-4" role="button">
-		Retour à l'accueil
+	<a href="{{ path('category_index') }}" class="btn btn-secondary m-4" role="button">
+		Retour
 	</a>
 {% endblock %}

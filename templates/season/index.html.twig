@@ -11,6 +11,7 @@
 {% endblock %}
 
 {% block body %}
+	<a href="{{ path('season_new') }}" class="btn btn-success mb-5" role="button">Créer</a>
 	<div class="accordion accordion-flush" id="seasonAccordion">
 		{% for season in seasons %}
 			<div class="accordion-item">
@@ -38,5 +39,4 @@
 		{% endfor %}
 	</div>
 
-	<a href="{{ path('season_new') }}" class="btn btn-success mt-5" role="button">Créer</a>
 {% endblock %}
