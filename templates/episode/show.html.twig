@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{parent()}}
+	-
+	{{episode.season.program.title}}
+	- Saison
+	{{episode.season.number}}
+	- Episode
+	{{episode.number}}
+{% endblock %}
+
+{% block page_title %}
+	<h1>{{episode.season.program.title}}
+	</h1>
+	<h3 class="text-muted">
+		Saison
+		{{episode.season.number}}
+		- Episode
+		{{episode.number}}
+	</h3>
+{% endblock %}
+
+{% block body %}
+	<table class="table">
+		<tbody>
+			<tr>
+				<th>Id</th>
+				<td>{{ episode.id }}</td>
+			</tr>
+			<tr>
+				<th>Titre</th>
+				<td>{{ episode.title }}</td>
+			</tr>
+			<tr>
+				<th>Numéro</th>
+				<td>{{ episode.number }}</td>
+			</tr>
+			<tr>
+				<th>Résumé</th>
+				<td>{{ episode.summary }}</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<a href="{{ path('episode_edit', {'id': episode.id}) }}" class="btn btn-warning" role="button">Editer</a>
+	{{ include('episode/_delete_form.html.twig') }}
+
+	<a href="{{ path('episode_index') }}" class="btn btn-secondary m-4" role="button">Retour</a>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{parent()}}
+	- Episodes
+{% endblock %}
+
+{% block page_title %}
+	<h1>Tous les épisodes
+	</h1>
+{% endblock %}
+
+{% block body %}
+	<div class="accordion accordion-flush" id="episodeAccordion">
+		{% for episode in episodes %}
+			<div class="accordion-item">
+				<h2 class="accordion-header" id="flush-heading-{{episode.id}}">
+					<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-{{episode.id}}" aria-expanded="false" aria-controls="flush-collapse-{{episode.id}}">
+						{{ episode.season.program.title }}
+						- Saison
+						{{ episode.season.number }}
+						- Episode
+						{{ episode.number }}
+						/
+						{{ episode.title }}
+
+					</button>
+				</h2>
+				<div id="flush-collapse-{{episode.id}}" class="accordion-collapse collapse" aria-labelledby="flush-heading-{{episode.id}}" data-bs-parent="#episodeAccordion">
+					<div class="accordion-body">
+						<span class="badge bg-light text-dark mb-4">{{ episode.season.program.category.name }}</span>
+						<span class="badge bg-light text-dark mb-4">{{ episode.season.year }}</span>
+						<p>{{ episode.summary }}</p>
+						<div class="btn-group">
+							<a href="{{ path("episode_show", { id: episode.id }) }}" class="btn btn-secondary" role="button">Voir la fiche</a>
+							<a href="{{ path("episode_edit", { id: episode.id }) }}" class="btn btn-warning" role="button">Editer</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		{% else %}
+			<tr>
+				<td colspan="5">Aucun épisode trouvé.</td>
+			</tr>
+		{% endfor %}
+	</div>
+
+	<a href="{{ path('episode_new') }}">Create new</a>
+{% endblock %}

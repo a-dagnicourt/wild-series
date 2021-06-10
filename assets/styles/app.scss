@@ -1,5 +1,9 @@
 body {
-  background-color: lightgray;
+    background-color: lightgray;
+}
+
+.btn {
+    min-width: 10em;
 }
 
 @import "custom";

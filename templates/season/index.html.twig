@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{parent()}}
+	- Saisons
+{% endblock %}
+
+{% block page_title %}
+	<h1>Toutes les saisons
+	</h1>
+{% endblock %}
+
+{% block body %}
+	<div class="accordion accordion-flush" id="seasonAccordion">
+		{% for season in seasons %}
+			<div class="accordion-item">
+				<h2 class="accordion-header" id="flush-heading-{{season.id}}">
+					<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-{{season.id}}" aria-expanded="false" aria-controls="flush-collapse-{{season.id}}">
+						{{ season.program.title }}
+						- Saison
+						{{ season.number }}
+					</button>
+				</h2>
+				<div id="flush-collapse-{{season.id}}" class="accordion-collapse collapse" aria-labelledby="flush-heading-{{season.id}}" data-bs-parent="#seasonAccordion">
+					<div class="accordion-body">
+						<span class="badge bg-light text-dark mb-4">{{ season.program.category.name }}</span>
+						<span class="badge bg-light text-dark mb-4">{{ season.year }}</span>
+						<p>{{ season.description }}</p>
+						<div class="btn-group">
+							<a href="{{ path("season_show", { id: season.id }) }}" class="btn btn-secondary" role="button">Voir la fiche</a>
+							<a href="{{ path("season_edit", { id: season.id }) }}" class="btn btn-warning" role="button">Editer</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		{% else %}
+			<p class="m-5">Aucune saison trouvée.</p>
+		{% endfor %}
+	</div>
+
+	<a href="{{ path('season_new') }}" class="btn btn-success mt-5" role="button">Créer</a>
+{% endblock %}
