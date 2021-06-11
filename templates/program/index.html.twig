@@ -22,7 +22,7 @@
 				</h2>
 				<div id="flush-collapse-{{program.id}}" class="accordion-collapse collapse" aria-labelledby="flush-heading-{{program.id}}" data-bs-parent="#accordionFlushExample">
 					<div class="accordion-body">
-						<a href="{{ path("category_index", { name: program.category }) }}">
+						<a href="{{ path("category_show", { id: program.category.id }) }}">
 							<span class="badge bg-light text-dark mb-4">
 								{{ program.category.name }}
 							</span>

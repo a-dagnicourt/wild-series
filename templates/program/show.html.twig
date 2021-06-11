@@ -23,7 +23,7 @@
 					</div>
 				</div>
 				<div class=" card-body">
-					<a href="{{ path("category_index", { name: program.category }) }}">
+					<a href="{{ path("category_show", { id: program.category.id }) }}">
 						<span class="badge bg-light text-dark my-3">
 							{{ program.category.name }}
 						</span>
