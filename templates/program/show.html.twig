@@ -7,6 +7,8 @@
 {% endblock %}
 
 {% block body %}
+	<a href="{{ path('program_edit', {'id': program.id}) }}" class="btn btn-warning" role="button">Editer</a>
+	{{ include('program/_delete_form.html.twig') }}
 	<div class="row">
 		<div class="col-12 col-lg-8">
 			<div class="card my-5">
@@ -32,10 +34,11 @@
 					<p class="card-text">{{ program.summary }}</p>
 					<hr/>
 					<p class="h5">Saisons</p>
+					<a href="{{ path('season_new') }}" class="btn btn-success mb-5" role="button">Créer</a>
 					<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
 						<div class="btn-group me-2 flex-wrap" role="group" aria-label="First group">
 							{% for season in seasons %}
-								<a href="{{ path("program_season_show", { programId: program.id, seasonId: season.id }) }}" class="btn btn-secondary" role="button">
+								<a href="{{ path("program_season_show", { id: program.id, seasonId: season.id }) }}" class="btn btn-secondary" role="button" style="min-width: 50px">
 									{{season.number}}
 								</a>
 							{% else %}
@@ -50,7 +53,7 @@
 		</div>
 	</div>
 
-	<a href="{{ path('app_index') }}" class="btn btn-secondary m-4" role="button">
-		Retour à l'accueil
+	<a href="{{ path('program_index') }}" class="btn btn-secondary m-4" role="button">
+		Retour
 	</a>
 {% endblock %}

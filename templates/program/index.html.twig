@@ -11,6 +11,7 @@
 {% endblock %}
 
 {% block body %}
+	<a href="{{ path('program_new') }}" class="btn btn-success mb-5" role="button">Créer</a>
 
 	<div class="accordion accordion-flush" id="programAccordion">
 		{% for program in programs %}

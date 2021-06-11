@@ -2,17 +2,17 @@
 
 {% block title %}
 	{{parent()}}
-	- Episodes - Editer
+	-Séries - Editer
 {% endblock %}
 
 {% block page_title %}
-	<h1>Editer un épisode
+	<h1>Editer une série
 	</h1>
 {% endblock %}
 
 {% block body %}
-	{{ include('episode/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
-	{{ include('episode/_delete_form.html.twig') }}
+	{{ include('program/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+	{{ include('program/_delete_form.html.twig') }}
 
 	<a href="{{ path('program_index') }}" class="btn btn-secondary m-4" role="button">
 		Retour
