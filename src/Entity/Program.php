@@ -5,54 +5,60 @@ namespace App\Entity;
 use App\Repository\ProgramRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToMany;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\Unique;
 
-/**
- * @ORM\Entity(repositoryClass=ProgramRepository::class)
- */
+#[Entity(repositoryClass:ProgramRepository::class)]
+#[UniqueEntity('title',message: "La série existe déjà.")]
+
 class Program
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[Id]
+    #[GeneratedValue()]
+    #[Column(type:"integer")]  
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[Column(type:"string", length:255, unique:true)]
+    #[Assert\NotBlank(message:"Le champs ne peut pas être vide.")]
+    #[Assert\Length(max:"255", maxMessage:"La saisie {{ value }} est trop longue, le maximum est {{ limit }} caractères.")]
     private $title;
 
-    /**
-     * @ORM\Column(type="text")
-     */
+    #[Column(type:"text")]    
+    #[Assert\NotBlank(message:"Le champs ne peut pas être vide.")]
+    #[Assert\Regex(
+        pattern:"/(?i)Plus belle la vie/", 
+        match: false,
+        message: "Ne fais plus jamais ça, on parle de vraies séries ici."
+        )]
     private $summary;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[Column(type:"string", length:255, nullable:true)]
+    #[Assert\Length(max:"255", maxMessage:"La saisie {{ value }} est trop longue, le maximum est {{ limit }} caractères.")]
     private $poster;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="programs")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    
+    #[ManyToOne(targetEntity:Category::class, inversedBy:"programs")]
+    #[JoinColumn(nullable:false)]
     private $category;
 
-    /**
-     * @ORM\Column(type="string", length=100, nullable=true)
-     */
+    #[Column(type:"string", length:100, nullable:true)]
+    #[Assert\Length(max:"100", maxMessage:"La saisie {{ value }} est trop longue, le maximum est {{ limit }} caractères.")]
     private $country;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[Column(type:"integer", length:4, nullable:true)]
+    #[Assert\GreaterThan(1900, message: "La date doit être supérieure à 1900")]
+    #[Assert\LessThan(2050, message: "La date doit être inférieure à 2050")]
     private $year;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Season::class, mappedBy="program", orphanRemoval=true)
-     */
+    #[OneToMany(targetEntity:Season::class, mappedBy:"program", orphanRemoval:true)]
     private $seasons;
 
     public function __construct()

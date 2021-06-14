@@ -3,39 +3,38 @@
 namespace App\Entity;
 
 use App\Repository\EpisodeRepository;
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=EpisodeRepository::class)
- */
+#[Entity(repositoryClass:EpisodeRepository::class)]
+
 class Episode
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[Id]
+    #[GeneratedValue()]
+    #[Column(type:"integer")]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Season::class, inversedBy="episodes")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ManyToOne(targetEntity:Season::class, inversedBy:"episodes")]  
+    #[Assert\NotBlank(message:"Le champs ne peut pas être vide.")] 
     private $season;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[Column(type:"string", length:255)]
+    #[Assert\NotBlank(message:"Le champs ne peut pas être vide.")]
+    #[Assert\Length(max:"255", maxMessage:"La saisie {{ value }} est trop longue, le maximum est {{ limit }} caractères.")]
     private $title;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[Column(type:"integer")]
+    #[Assert\GreaterThan(0, message: "Le numéro doit être supérieur à 0")]
+    #[Assert\LessThan(500, message: "Le numéro doit être inférieur à 500")]    
     private $number;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[Column(type:"text")]       
+    #[Assert\NotBlank(message:"Le champs ne peut pas être vide.")]
     private $summary;
 
     public function getId(): ?int

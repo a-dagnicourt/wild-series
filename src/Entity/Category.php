@@ -5,28 +5,34 @@ namespace App\Entity;
 use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\OneToMany;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=CategoryRepository::class)
- */
+
+#[Entity(repositoryClass:CategoryRepository::class)]
+#[UniqueEntity('name',message: "La catégorie existe déjà.")]
+
 class Category
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    
+    #[Id]
+    #[GeneratedValue()]
+    #[Column(type:"integer")]    
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=100)
-     */
+    #[Column(type:"string", length:100)]
+    #[Assert\NotBlank(message:"Le champs ne peut pas être vide.")]
+    #[Assert\Length(max:"100", maxMessage:"La saisie {{ value }} est trop longue, le maximum est {{ limit }} caractères.")]
     private $name;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Program::class, mappedBy="category")
-     */
+    
+    #[OneToMany(targetEntity:Program::class, mappedBy:"category")]
+    
     private $programs;
 
     public function __construct()
@@ -34,9 +40,10 @@ class Category
         $this->programs = new ArrayCollection();
     }
 
+    
     /**
-     * @return Collection|Program[]
-     */
+    * @return Collection|Program[]
+    */    
     public function getPrograms(): Collection
     {
         return $this->programs;
@@ -57,21 +64,20 @@ class Category
     }
 
     /**
-     * @param Program $program
-     * @return Category
-     */
-
+    * @param Program $program
+    * @return Category
+    */
     public function removeProgram(Program $program): self
     {
         if ($this->programs->contains($program)) {
-                  $this->programs->removeElement($program);
+                $this->programs->removeElement($program);
                   // set the owning side to null (unless already changed)
-                  if ($program->getCategory() === $this) {
-                      $program->setCategory(null);
-                  }
-         }
+                if ($program->getCategory() === $this) {
+                    $program->setCategory(null);
+                }
+        }
 
-         return $this;
+        return $this;
     }
 
     public function getId(): ?int

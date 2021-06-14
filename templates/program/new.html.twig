@@ -17,6 +17,7 @@
 	<div class="form-control mb-3">
 		{{ form_widget(form) }}
 		<input type='submit' value='Créer série' class="btn btn-primary my-4">
+		{{form_errors(form)}}
 	</div>
 	{{ form_end(form) }}
 

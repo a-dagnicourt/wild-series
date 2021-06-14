@@ -5,44 +5,45 @@ namespace App\Entity;
 use App\Repository\SeasonRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToMany;
+use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=SeasonRepository::class)
- */
+#[Entity(repositoryClass:SeasonRepository::class)]
+
 class Season
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[Id]
+    #[GeneratedValue()]
+    #[Column(type:"integer")] 
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Program::class, inversedBy="seasons")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ManyToOne(targetEntity:Program::class, inversedBy:"seasons")]
+    #[JoinColumn(nullable:false)]
     private $program;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    
+    #[Column(type:"integer")]    
+    #[Assert\GreaterThan(0, message: "Le numéro doit être supérieur à 0")]
+    #[Assert\LessThan(100, message: "Le numéro doit être inférieur à 100")]   
     private $number;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    
+    #[Column(type:"integer")] 
+    #[Assert\GreaterThan(1900, message: "La date doit être supérieure à 1900")]
+    #[Assert\LessThan(2050, message: "La date doit être inférieure à 2050")]  
     private $year;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[Column(type:"text")]      
+    #[Assert\NotBlank(message:"Le champs ne peut pas être vide.")]
     private $description;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Episode::class, mappedBy="season", orphanRemoval=true)
-     */
+    #[OneToMany(targetEntity:Episode::class, mappedBy:"season", orphanRemoval:true)]
     private $episodes;
 
     public function __construct()
