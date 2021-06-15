@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{parent()}}
+	- Acteurs
+{% endblock %}
+
+{% block page_title %}
+	<h1>Tous les acteurs
+	</h1>
+{% endblock %}
+
+{% block body %}
+	<a href="{{ path('actor_new') }}" class="btn btn-success mb-5" role="button">Créer</a>
+	<div class="accordion accordion-flush" id="actorAccordion">
+		{% for actor in actors %}
+			<div class="accordion-item">
+				<h2 class="accordion-header" id="flush-heading-{{actor.id}}">
+					<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-{{actor.id}}" aria-expanded="false" aria-controls="flush-collapse-{{actor.id}}">
+						{{ actor.name }}
+					</button>
+				</h2>
+				<div id="flush-collapse-{{actor.id}}" class="accordion-collapse collapse" aria-labelledby="flush-heading-{{actor.id}}" data-bs-parent="#actorAccordion">
+					<div class="accordion-body">
+						<ul class="list-group-flush">
+							{% for program in actor.programs %}
+								<li class="list-group-item">
+									<a href="{{ path("program_show", { id: program.id }) }}" class="text-decoration-none ">
+										{{ program.title }}
+									</a>
+								</li>
+							{% else %}
+								<li class="list-group-item">Aucune série trouvée.</li>
+							{% endfor %}
+						</ul>
+						<div class="btn-group">
+							<a href="{{ path("actor_show", { id: actor.id }) }}" class="btn btn-secondary" role="button">Voir la fiche</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		{% else %}
+			<p class="m-5">Aucun acteur trouvé.</p>
+		{% endfor %}
+	</div>
+
+{% endblock %}

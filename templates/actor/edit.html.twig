@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{parent()}}
+	- Acteurs - Editer
+{% endblock %}
+
+{% block page_title %}
+	<h1>Editer un acteur
+	</h1>
+{% endblock %}
+
+{% block body %}
+	{{ include('actor/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+	{{ include('actor/_delete_form.html.twig') }}
+
+	<a href="{{ path('actor_index') }}" class="btn btn-secondary m-4" role="button">
+		Retour
+	</a>
+
+{% endblock %}
