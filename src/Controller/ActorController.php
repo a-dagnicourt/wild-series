@@ -10,10 +10,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/actors')]
+/** 
+ * @Route("/actors", name="actor_")
+ */
 class ActorController extends AbstractController
 {
-    #[Route('/', name: 'actor_index', methods: ['GET'])]
+    /**
+     * @Route("/", name="index", methods={"GET"})
+    */
     public function index(ActorRepository $actorRepository): Response
     {
         return $this->render('actor/index.html.twig', [
@@ -21,7 +25,9 @@ class ActorController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'actor_new', methods: ['GET', 'POST'])]
+    /**
+     * @Route("/new", name="new", methods={"GET", "POST"})
+    */
     public function new(Request $request): Response
     {
         $actor = new Actor();
@@ -42,7 +48,9 @@ class ActorController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'actor_show', methods: ['GET'])]
+    /**
+     * @Route("/{id}", name="show", methods={"GET"})
+     */
     public function show(Actor $actor): Response
     {
         return $this->render('actor/show.html.twig', [
@@ -50,7 +58,9 @@ class ActorController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'actor_edit', methods: ['GET', 'POST'])]
+    /**
+     * @Route("/{id}/edit", name="edit", methods={"GET", "POST"})
+     */
     public function edit(Request $request, Actor $actor): Response
     {
         $form = $this->createForm(ActorType::class, $actor);
@@ -68,7 +78,9 @@ class ActorController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'actor_delete', methods: ['POST'])]
+    /**
+     * @Route("/{id}", name="delete", methods={"POST"})
+     */
     public function delete(Request $request, Actor $actor): Response
     {
         if ($this->isCsrfTokenValid('delete'.$actor->getId(), $request->request->get('_token'))) {

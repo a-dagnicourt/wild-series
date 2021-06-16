@@ -2,32 +2,40 @@
 
 namespace App\Entity;
 
-use App\Repository\ActorRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping\Column;
-use Doctrine\ORM\Mapping\GeneratedValue;
-use Doctrine\ORM\Mapping\Id;
-use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\ManyToMany;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[Entity(repositoryClass:ActorRepository::class)]
+use Doctrine\ORM\Mapping as ORM;
+/**
+ * @ORM\Entity(repositoryClass=ActorRepository::class)
+ */
 
 class Actor
 {
-    #[Id]
-    #[GeneratedValue()]
-    #[Column(type:"integer")]  
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
     private $id;
 
-    #[Column(type:"string", length:255)]
-    #[Assert\NotBlank(message:"Le champs ne peut pas être vide.")]
-    #[Assert\Length(max:"255", maxMessage:"La saisie {{ value }} est trop longue, le maximum est {{ limit }} caractères.")]
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Le champs ne peut pas être vide.")
+     * @Assert\Length(max="255", maxMessage="La saisie {{ value }} est trop longue, le maximum est {{ limit }} caractères.")
+     */
     private $name;
 
-    #[ManyToMany(targetEntity:Program::class, inversedBy:"actors")]
+    /**
+     * @ORM\ManyToMany(targetEntity=Program::class, inversedBy="actors")
+     */
     private $programs;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $slug;
 
     public function __construct()
     {
@@ -71,6 +79,18 @@ class Actor
     public function removeProgram(Program $program): self
     {
         $this->programs->removeElement($program);
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }

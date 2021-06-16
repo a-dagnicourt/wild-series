@@ -2,40 +2,52 @@
 
 namespace App\Entity;
 
-use App\Repository\EpisodeRepository;
-use Doctrine\ORM\Mapping\Column;
-use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\GeneratedValue;
-use Doctrine\ORM\Mapping\Id;
-use Doctrine\ORM\Mapping\ManyToOne;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[Entity(repositoryClass:EpisodeRepository::class)]
+use Doctrine\ORM\Mapping as ORM;
+/**
+ * @ORM\Entity(repositoryClass=EpisodeRepository::class)
+ */
 
 class Episode
 {
-    #[Id]
-    #[GeneratedValue()]
-    #[Column(type:"integer")]
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
     private $id;
 
-    #[ManyToOne(targetEntity:Season::class, inversedBy:"episodes")]  
-    #[Assert\NotBlank(message:"Le champs ne peut pas être vide.")] 
+    /**
+     * @ORM\ManyToOne(targetEntity=Season::class, inversedBy="episodes")  
+     * @Assert\NotBlank(message="Le champs ne peut pas être vide.") 
+     */
     private $season;
 
-    #[Column(type:"string", length:255)]
-    #[Assert\NotBlank(message:"Le champs ne peut pas être vide.")]
-    #[Assert\Length(max:"255", maxMessage:"La saisie {{ value }} est trop longue, le maximum est {{ limit }} caractères.")]
+    /**
+      * @ORM\Column(type="string", length=255)
+      * @Assert\NotBlank(message="Le champs ne peut pas être vide.")
+      * @Assert\Length(max="255", maxMessage="La saisie {{ value }} est trop longue, le maximum est {{ limit }} caractères.")
+      */
     private $title;
 
-    #[Column(type:"integer")]
-    #[Assert\GreaterThan(0, message: "Le numéro doit être supérieur à 0")]
-    #[Assert\LessThan(500, message: "Le numéro doit être inférieur à 500")]    
+    /**
+     * @ORM\Column(type="integer")
+     * @Assert\GreaterThan(0, message="Le numéro doit être supérieur à 0")
+     * @Assert\LessThan(500, message="Le numéro doit être inférieur à 500")    
+     */
     private $number;
 
-    #[Column(type:"text")]       
-    #[Assert\NotBlank(message:"Le champs ne peut pas être vide.")]
+    /**
+     * @ORM\Column(type="text")       
+     * @Assert\NotBlank(message="Le champs ne peut pas être vide.")
+     */
     private $summary;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $slug;
 
     public function getId(): ?int
     {
@@ -86,6 +98,18 @@ class Episode
     public function setSummary(?string $summary): self
     {
         $this->summary = $summary;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }

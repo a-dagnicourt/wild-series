@@ -2,67 +2,82 @@
 
 namespace App\Entity;
 
-use App\Repository\ProgramRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping\Column;
-use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\GeneratedValue;
-use Doctrine\ORM\Mapping\Id;
-use Doctrine\ORM\Mapping\JoinColumn;
-use Doctrine\ORM\Mapping\ManyToMany;
-use Doctrine\ORM\Mapping\ManyToOne;
-use Doctrine\ORM\Mapping\OneToMany;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[Entity(repositoryClass:ProgramRepository::class)]
-#[UniqueEntity('title',message: "La série existe déjà.")]
+use Doctrine\ORM\Mapping as ORM;
+/**
+* @ORM\Entity(repositoryClass=ProgramRepository::class)
+* @UniqueEntity("title",message="La série existe déjà.")
+*/
 
 class Program
 {
-    #[Id]
-    #[GeneratedValue()]
-    #[Column(type:"integer")]  
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */ 
     private $id;
 
-    #[Column(type:"string", length:255, unique:true)]
-    #[Assert\NotBlank(message:"Le champs ne peut pas être vide.")]
-    #[Assert\Length(max:"255", maxMessage:"La saisie {{ value }} est trop longue, le maximum est {{ limit }} caractères.")]
+    /**
+    * @ORM\Column(type="string", length=255, unique=true)
+    * @Assert\NotBlank(message="Le champs ne peut pas être vide.")
+    * @Assert\Length(max="255", maxMessage="La saisie {{ value }} est trop longue, le maximum est {{ limit }} caractères.")
+    */
     private $title;
-
-    #[Column(type:"text")]    
-    #[Assert\NotBlank(message:"Le champs ne peut pas être vide.")]
-    #[Assert\Regex(
-        pattern:"/(?i)Plus belle la vie/", 
-        match: false,
-        message: "Ne fais plus jamais ça, on parle de vraies séries ici."
-        )]
+    
+    /**
+    * @ORM\Column(type="text")    
+    * @Assert\NotBlank(message="Le champs ne peut pas être vide.")
+    * @Assert\Regex(
+    *   pattern="/(?i)Plus belle la vie/", 
+    *   match= false,
+    *   message= "Ne fais plus jamais ça, on parle de vraies séries ici."
+    *  )
+    */
     private $summary;
-
-    #[Column(type:"string", length:255, nullable:true)]
-    #[Assert\Length(max:"255", maxMessage:"La saisie {{ value }} est trop longue, le maximum est {{ limit }} caractères.")]
+    /**
+    * @ORM\Column(type="string", length=255, nullable=true)
+    * @Assert\Length(max="255", maxMessage="La saisie {{ value }} est trop longue, le maximum est {{ limit }} caractères.")
+    */
     private $poster;
 
-    
-    #[ManyToOne(targetEntity:Category::class, inversedBy:"programs")]
-    #[JoinColumn(nullable:false)]
+    /**   
+    * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="programs")
+    * @ORM\JoinColumn(nullable=false)
+    */
     private $category;
 
-    #[Column(type:"string", length:100, nullable:true)]
-    #[Assert\Length(max:"100", maxMessage:"La saisie {{ value }} est trop longue, le maximum est {{ limit }} caractères.")]
+    /**
+    * @ORM\Column(type="string", length=100, nullable=true)
+    * @Assert\Length(max="100", maxMessage="La saisie {{ value }} est trop longue, le maximum est {{ limit }} caractères.")
+    */
     private $country;
 
-    #[Column(type:"integer", length:4, nullable:true)]
-    #[Assert\GreaterThan(1900, message: "La date doit être supérieure à 1900")]
-    #[Assert\LessThan(2050, message: "La date doit être inférieure à 2050")]
+    /**
+    * @ORM\Column(type="integer", length=4, nullable=true)
+    * @Assert\GreaterThan(1900, message= "La date doit être supérieure à 1900")
+    * @Assert\LessThan(2050, message= "La date doit être inférieure à 2050")
+    */
     private $year;
 
-    #[OneToMany(targetEntity:Season::class, mappedBy:"program", orphanRemoval:true)]
+    /**
+    * @ORM\OneToMany(targetEntity=Season::class, mappedBy="program", orphanRemoval=true)
+    */
     private $seasons;
 
-    #[ManyToMany(targetEntity:Actor::class, mappedBy:"programs")]
+    /**
+    * @ORM\ManyToMany(targetEntity=Actor::class, mappedBy="programs")
+    */
     private $actors;
+
+    /**
+    * @ORM\Column(type="string", length=255)
+    */
+    private $slug;
 
     public function __construct()
     {
@@ -169,7 +184,7 @@ class Program
     {
         if ($this->seasons->removeElement($season)) {
             // set the owning side to null (unless already changed)
-            if ($season->getProgram() === $this) {
+            if ($season->getProgram()=== $this) {
                 $season->setProgram(null);
             }
         }
@@ -200,6 +215,18 @@ class Program
         if ($this->actors->removeElement($actor)) {
             $actor->removeProgram($this);
         }
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }
