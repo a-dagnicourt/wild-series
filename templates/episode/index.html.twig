@@ -34,8 +34,8 @@
 						<span class="badge bg-light text-dark mb-4">{{ episode.season.year }}</span>
 						<p>{{ episode.summary }}</p>
 						<div class="btn-group">
-							<a href="{{ path("episode_show", { id: episode.id }) }}" class="btn btn-secondary" role="button">Voir la fiche</a>
-							<a href="{{ path("episode_edit", { id: episode.id }) }}" class="btn btn-warning" role="button">Editer</a>
+							<a href="{{ path("episode_show", { slug: episode.slug }) }}" class="btn btn-secondary" role="button">Voir la fiche</a>
+							<a href="{{ path("episode_edit", { slug: episode.slug }) }}" class="btn btn-warning" role="button">Editer</a>
 						</div>
 					</div>
 				</div>

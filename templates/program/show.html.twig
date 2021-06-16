@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block body %}
-	<a href="{{ path('program_edit', {'id': program.id}) }}" class="btn btn-warning" role="button">Editer</a>
+	<a href="{{ path('program_edit', {'slug': program.slug}) }}" class="btn btn-warning" role="button">Editer</a>
 	{{ include('program/_delete_form.html.twig') }}
 	<div class="row">
 		<div class="col-12 col-lg-8">
@@ -25,7 +25,7 @@
 					</div>
 				</div>
 				<div class=" card-body">
-					<a href="{{ path("category_show", { id: program.category.id }) }}">
+					<a href="{{ path("category_show", { slug: program.category.slug }) }}">
 						<span class="badge bg-light text-dark my-3">
 							{{ program.category.name }}
 						</span>
@@ -38,7 +38,7 @@
 					<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
 						<div class="btn-group me-2 flex-wrap" role="group" aria-label="First group">
 							{% for season in seasons %}
-								<a href="{{ path("program_season_show", { id: program.id, seasonId: season.id }) }}" class="btn btn-secondary" role="button" style="min-width: 50px">
+								<a href="{{ path("program_season_show", { slug: program.slug, seasonId: season.id }) }}" class="btn btn-secondary" role="button" style="min-width: 50px">
 									{{season.number}}
 								</a>
 							{% else %}
@@ -53,7 +53,7 @@
 					<ul class="list-group-flush">
 						{% for actor in program.actors %}
 							<li class="list-group-item">
-								<a href="{{ path("actor_show", { id: actor.id }) }}" class="text-decoration-none ">
+								<a href="{{ path("actor_show", { slug: actor.slug }) }}" class="text-decoration-none ">
 									{{ actor.name }}
 								</a>
 							</li>

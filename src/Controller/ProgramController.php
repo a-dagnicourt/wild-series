@@ -55,7 +55,7 @@ class ProgramController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="show", methods={"GET"})
+     * @Route("/{slug}", name="show", methods={"GET"})
      */
     public function show(Program $program, SeasonRepository $seasonRepository): Response
     {
@@ -64,12 +64,6 @@ class ProgramController extends AbstractController
             'No program id n°'.$program.' found in program\'s table.'
         );
     }
-    $seasons = $this->getDoctrine()
-        ->getRepository(Season::class)
-        ->findBy(
-            ['program' => $program],
-            ['year' => 'ASC']
-        );
 
     return $this->render('program/show.html.twig', [
         'program' => $program,
@@ -81,7 +75,7 @@ class ProgramController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/season/{seasonId}", name="season_show", methods={"GET"})
+     * @Route("/{slug}/season/{seasonId}", name="season_show", methods={"GET"})
      */
     public function seasonShow(Program $program, int $seasonId, SeasonRepository $seasonRepository, EpisodeRepository $episodeRepository): Response
     {
@@ -103,14 +97,16 @@ class ProgramController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="edit", methods={"GET", "POST"})
+     * @Route("/{slug}/edit", name="edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, Program $program): Response
+    public function edit(Request $request, Program $program, Slugify $slugify): Response
     {
         $form = $this->createForm(ProgramType::class, $program);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $slug = $slugify->generate($program->getTitle());
+            $program->setSlug($slug);
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('index');
@@ -123,7 +119,7 @@ class ProgramController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="delete", methods={"POST"})
+     * @Route("/{slug}", name="delete", methods={"POST"})
      */
     public function delete(Request $request, Program $program): Response
     {

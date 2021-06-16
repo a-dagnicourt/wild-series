@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block body %}
-	<a href="{{ path('actor_edit', {'id': actor.id}) }}" class="btn btn-warning" role="button">Editer</a>
+	<a href="{{ path('actor_edit', {'slug': actor.slug}) }}" class="btn btn-warning" role="button">Editer</a>
 	{{ include('actor/_delete_form.html.twig') }}
 
 	<div class="row">
@@ -21,7 +21,7 @@
 					<ul class="list-group-flush">
 						{% for program in actor.programs %}
 							<li class="list-group-item">
-								<a href="{{ path("program_show", { id: program.id }) }}" class="text-decoration-none ">
+								<a href="{{ path("program_show", { slug: program.slug }) }}" class="text-decoration-none ">
 									{{ program.title }}
 								</a>
 							</li>

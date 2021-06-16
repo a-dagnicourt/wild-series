@@ -25,7 +25,7 @@
 						<ul class="list-group-flush">
 							{% for program in actor.programs %}
 								<li class="list-group-item">
-									<a href="{{ path("program_show", { id: program.id }) }}" class="text-decoration-none ">
+									<a href="{{ path("program_show", { slug: program.slug }) }}" class="text-decoration-none ">
 										{{ program.title }}
 									</a>
 								</li>
@@ -34,7 +34,7 @@
 							{% endfor %}
 						</ul>
 						<div class="btn-group">
-							<a href="{{ path("actor_show", { id: actor.id }) }}" class="btn btn-secondary" role="button">Voir la fiche</a>
+							<a href="{{ path("actor_show", { slug: actor.slug }) }}" class="btn btn-secondary" role="button">Voir la fiche</a>
 						</div>
 					</div>
 				</div>

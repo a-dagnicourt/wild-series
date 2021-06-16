@@ -28,8 +28,8 @@
 						<span class="badge bg-light text-dark mb-4">{{ season.year }}</span>
 						<p>{{ season.description }}</p>
 						<div class="btn-group">
-							<a href="{{ path("season_show", { id: season.id }) }}" class="btn btn-secondary" role="button">Voir la fiche</a>
-							<a href="{{ path("season_edit", { id: season.id }) }}" class="btn btn-warning" role="button">Editer</a>
+							<a href="{{ path("season_show", { slug: season.slug }) }}" class="btn btn-secondary" role="button">Voir la fiche</a>
+							<a href="{{ path("season_edit", { slug: season.slug }) }}" class="btn btn-warning" role="button">Editer</a>
 						</div>
 					</div>
 				</div>

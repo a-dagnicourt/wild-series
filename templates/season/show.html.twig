@@ -5,7 +5,7 @@
 	-
 	{{season.program.title}}
 	-
-											    Saison
+		Saison
 	{{season.number}}
 {% endblock %}
 
@@ -40,7 +40,7 @@
 	</table>
 
 
-	<a href="{{ path('season_edit', {'id': season.id}) }}" class="btn btn-warning" role="button">Editer</a>
+	<a href="{{ path('season_edit', {'slug': season.slug}) }}" class="btn btn-warning" role="button">Editer</a>
 	{{ include('season/_delete_form.html.twig') }}
 
 	<a href="{{ path('season_index') }}" class="btn btn-secondary m-4" role="button">Retour</a>

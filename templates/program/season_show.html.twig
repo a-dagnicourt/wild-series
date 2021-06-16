@@ -23,7 +23,7 @@
 					<p class="card-text">{{ season.year }}</p>
 					<div class="btn-group me-2 flex-wrap" role="group" aria-label="First group">
 						<a href="{{ path('episode_new') }}" class="btn btn-success mb-5" role="button">Créer Episode</a>
-						<a href="{{ path("season_edit", { id: season.id }) }}" class="btn btn-warning mb-5" role="button">Editer</a>
+						<a href="{{ path("season_edit", { slug: season.slug }) }}" class="btn btn-warning mb-5" role="button">Editer</a>
 						{{ include('season/_delete_form.html.twig') }}
 					</div>
 					<div class="accordion accordion-flush" id="episodeAccordion">
@@ -38,7 +38,7 @@
 								</h2>
 								<div id="flush-collapse-{{episode.id}}" class="accordion-collapse collapse" aria-labelledby="flush-heading-{{episode.id}}" data-bs-parent="#accordionFlushExample">
 									<div class="accordion-body">
-										<a href="{{ path('episode_edit', {'id': episode.id}) }}" class="btn btn-warning" role="button">Editer</a>
+										<a href="{{ path('episode_edit', {'slug': episode.slug}) }}" class="btn btn-warning" role="button">Editer</a>
 										{{ include('episode/_delete_form.html.twig') }}
 										<p>{{ episode.summary }}</p>
 									</div>
@@ -55,7 +55,7 @@
 		</div>
 	</div>
 
-	<a href="{{ path('program_show', {'id': program.id}) }}" class="btn btn-secondary m-4" role="button">
+	<a href="{{ path('program_show', {'slug': program.slug}) }}" class="btn btn-secondary m-4" role="button">
 		Retour
 	</a>
 {% endblock %}
