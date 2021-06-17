@@ -10,9 +10,11 @@ use App\Repository\EpisodeRepository;
 use App\Repository\ProgramRepository;
 use App\Repository\SeasonRepository;
 use App\Service\Slugify;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /** 
@@ -33,7 +35,7 @@ class ProgramController extends AbstractController
     /**
      * @Route("/new", name="new", methods={"GET", "POST"})
     */
-    public function new(Request $request, Slugify $slugify) : Response
+    public function new(Request $request, Slugify $slugify, MailerInterface $mailer) : Response
     {
         $program = new Program();
         $form = $this->createForm(ProgramType::class, $program);
@@ -46,7 +48,19 @@ class ProgramController extends AbstractController
             $entityManager->persist($program);
             $entityManager->flush();
 
+            $email = (new TemplatedEmail())
+                ->from($this->getParameter('mailer_from'))
+                ->to('email@test.com')
+                ->subject('Une nouvelle série vient d\'être publiée !')
+                ->htmlTemplate('program/newProgramEmail.html.twig')
+                ->context([
+                    'program' => $program
+                ]);
+
+        $mailer->send($email);
+
             return $this->redirectToRoute('program_index');
+            
         }
         return $this->render('program/new.html.twig', [
             'program' => $program,
@@ -57,7 +71,7 @@ class ProgramController extends AbstractController
     /**
      * @Route("/{slug}", name="show", methods={"GET"})
      */
-    public function show(Program $program, SeasonRepository $seasonRepository): Response
+    public function show(Program $program): Response
     {
         if (!$program) {
         throw $this->createNotFoundException(
@@ -67,17 +81,14 @@ class ProgramController extends AbstractController
 
     return $this->render('program/show.html.twig', [
         'program' => $program,
-        'seasons' => $seasonRepository->findBy(
-            ['program' => $program],
-            ['year' => 'ASC']
-        )
+        'seasons' => $program->getSeasons()
     ]);
     }
 
     /**
-     * @Route("/{slug}/season/{seasonId}", name="season_show", methods={"GET"})
+     * @Route("/{slug}/season/{seasonNumber}", name="season_show", methods={"GET"})
      */
-    public function seasonShow(Program $program, int $seasonId, SeasonRepository $seasonRepository, EpisodeRepository $episodeRepository): Response
+    public function seasonShow(Program $program, int $seasonNumber, SeasonRepository $seasonRepository): Response
     {
     if (!$program) {
         throw $this->createNotFoundException(
@@ -86,13 +97,8 @@ class ProgramController extends AbstractController
     }
 
     return $this->render('program/season_show.html.twig', [
-        'program' => $program,
-        'season' => $seasonRepository->findOneBy(
-            ['id' => $seasonId]
-        ),
-        'episodes' => $episodeRepository->findBy(
-            ['season' => $seasonId]
-        )
+        'program' => $program,        
+        'season' => $seasonRepository->findOneBy(['number' => $seasonNumber])
     ]);
     }
 

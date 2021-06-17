@@ -6,9 +6,11 @@ use App\Entity\Episode;
 use App\Form\EpisodeType;
 use App\Repository\EpisodeRepository;
 use App\Service\Slugify;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /** 
@@ -29,18 +31,32 @@ class EpisodeController extends AbstractController
     /**
      * @Route("/new", name="new", methods={"GET", "POST"})
     */
-    public function new(Request $request, Slugify $slugify): Response
+    public function new(Request $request, Slugify $slugify, MailerInterface $mailer): Response
     {
         $episode = new Episode();
         $form = $this->createForm(EpisodeType::class, $episode);
         $form->handleRequest($request);
-
+        
+        
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $slug = $slugify->generate($episode->getTitle());
             $episode->setSlug($slug);
             $entityManager->persist($episode);
             $entityManager->flush();
+            
+            $program = $episode->getSeason()->getProgram();
+            $subject = 'Un nouvel épisode de '. $program->getTitle() .' vient d\'être publié !';
+            $email = (new TemplatedEmail())
+                ->from($this->getParameter('mailer_from'))
+                ->to('email@test.com')
+                ->subject($subject)
+                ->htmlTemplate('episode/newEpisodeEmail.html.twig')
+                ->context([
+                    'episode' => $episode
+                ]);
+
+        $mailer->send($email);
 
             return $this->redirectToRoute('program_index');
         }

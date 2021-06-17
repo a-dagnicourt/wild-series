@@ -38,7 +38,7 @@
 					<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
 						<div class="btn-group me-2 flex-wrap" role="group" aria-label="First group">
 							{% for season in seasons %}
-								<a href="{{ path("program_season_show", { slug: program.slug, seasonId: season.id }) }}" class="btn btn-secondary" role="button" style="min-width: 50px">
+								<a href="{{ path("program_season_show", { slug: program.slug, seasonNumber: season.number }) }}" class="btn btn-secondary" role="button" style="min-width: 50px">
 									{{season.number}}
 								</a>
 							{% else %}

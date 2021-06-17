@@ -27,7 +27,7 @@
 						{{ include('season/_delete_form.html.twig') }}
 					</div>
 					<div class="accordion accordion-flush" id="episodeAccordion">
-						{% for episode in episodes %}
+						{% for episode in season.episodes %}
 							<div class="accordion-item">
 								<h2 class="accordion-header" id="flush-heading-{{episode.id}}">
 									<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-{{episode.id}}" aria-expanded="false" aria-controls="flush-collapseOne">

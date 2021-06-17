@@ -6,9 +6,11 @@ use App\Entity\Season;
 use App\Form\SeasonType;
 use App\Repository\SeasonRepository;
 use App\Service\Slugify;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /** 
@@ -29,19 +31,32 @@ class SeasonController extends AbstractController
     /**
      * @Route("/new", name="new", methods={"GET", "POST"})
     */
-    public function new(Request $request, Slugify $slugify): Response
+    public function new(Request $request, Slugify $slugify, MailerInterface $mailer): Response
     {
         $season = new Season();
         $form = $this->createForm(SeasonType::class, $season);
         $form->handleRequest($request);
 
+        
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-            $slug = $slugify->generate($season->getDescription());
+            $slug = $slugify->generate($season->getNumber());
             $season->setSlug($slug);
             $entityManager->persist($season);
             $entityManager->flush();
+            
+            $program = $season->getProgram();
+            $subject = 'Une nouvelle saison de '. $program->getTitle() .' vient d\'être publiée !';
+            $email = (new TemplatedEmail())
+                ->from($this->getParameter('mailer_from'))
+                ->to('email@test.com')
+                ->subject($subject)
+                ->htmlTemplate('season/newSeasonEmail.html.twig')
+                ->context([
+                    'season' => $season
+                ]);
 
+        $mailer->send($email);
             return $this->redirectToRoute('program_index');
         }
 
@@ -70,7 +85,7 @@ class SeasonController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $slug = $slugify->generate($season->getDescription());
+            $slug = $slugify->generate($season->getNumber());
             $season->setSlug($slug);
             $this->getDoctrine()->getManager()->flush();
 

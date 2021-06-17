@@ -1,0 +1,31 @@
+{% extends 'layoutEmail.html.twig' %}
+
+{% block page_title %}
+	<h1>Une nouvelle série est dispo sur<strong>Wild Series !</strong>
+	</h1>
+{% endblock %}
+
+{% block body %}
+	<img src="{{program.poster}}" alt="{{ program.title }}" type="button" class="card-img-top" style="height: 40vh; object-fit: cover; object-position: center top">
+	<h2 class="card-title">{{ program.title }}</h2>
+	<div class="badge-container">
+		<span class="badge">{{ program.category.name }}</span>
+		<span class="badge">{{ program.country }}</span>
+		<span class="badge">{{ program.year }}</span>
+	</div>
+	<p>{{ program.summary }}</p>
+	<p>
+		<i>
+			Avec :
+		</i>
+		{% for actor in program.actors %}
+			{{actor.name}}
+		{% endfor %}
+	</p>
+{% endblock %}
+
+{% block link %}
+	<a href="http://localhost:8000/programs/{{program.slug}}" class="link-button">
+		Voir la série
+	</a>
+{% endblock %}

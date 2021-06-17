@@ -1,0 +1,16 @@
+{% apply inline_css(source('@styles/email.scss')) %}
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>
+			{% block title %}Wild Series
+			{% endblock %}
+		</title>
+	</head>
+	<body>
+		<div class="container"> {% block page_title %}{% endblock %}{% block body %}{% endblock %}{% block link %}{% endblock %}
+			</div>
+		</body>
+	</html>
+	{% endapply %}
