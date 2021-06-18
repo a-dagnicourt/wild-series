@@ -20,6 +20,21 @@
 						<a class="nav-link" href="{{ path("actor_index")}}">Acteurs</a>
 					</li>
 				</ul>
+				{% if app.user %}
+					<span class="mx-2 text-light">
+						{{ app.user.username }}
+					</span>
+					<a href="{{ path('app_logout') }}">
+						<i class="fas fa-sign-out-alt"></i>
+					</a>
+				{% else %}
+					<a href="{{ path('app_login') }}" class="text-decoration-none">
+						<span class="mx-2 text-light">
+							Connexion
+						</span>
+						<i class="fas fa-sign-in-alt"></i>
+					</a>
+				{% endif %}
 			</div>
 		</div>
 	</nav>
