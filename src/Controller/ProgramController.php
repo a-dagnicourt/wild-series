@@ -2,10 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Episode;
 use App\Entity\Program;
 use App\Entity\Season;
 use App\Form\ProgramType;
+use App\Repository\CommentRepository;
 use App\Repository\EpisodeRepository;
 use App\Repository\ProgramRepository;
 use App\Repository\SeasonRepository;
@@ -99,6 +101,24 @@ class ProgramController extends AbstractController
     return $this->render('program/season_show.html.twig', [
         'program' => $program,        
         'season' => $seasonRepository->findOneBy(['number' => $seasonNumber])
+    ]);
+    }
+
+    /**
+     * @Route("/{slug}/season/{seasonNumber}/episode/{episodeSlug}", name="episode_show", methods={"GET"})
+     */
+    public function episodeShow(Program $program, int $seasonNumber, string $episodeSlug, SeasonRepository $seasonRepository, EpisodeRepository $episodeRepository): Response
+    {
+    if (!$program) {
+        throw $this->createNotFoundException(
+            'No program id n°'.$program.' found in program\'s table.'
+        );
+    }
+
+    return $this->render('program/episode_show.html.twig', [
+        'program' => $program,        
+        'season' => $seasonRepository->findOneBy(['number' => $seasonNumber]),
+        'episode' => $episodeRepository->findOneBy(['slug' => $episodeSlug]),
     ]);
     }
 

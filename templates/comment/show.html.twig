@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{parent()}}
+	-
+	Commentaire {{comment.id}}
+{% endblock %}
+
+{% block body %}
+	<a href="{{ path('comment_edit', {'id': comment.id}) }}" class="btn btn-warning" role="button">Editer</a>
+	{{ include('comment/_delete_form.html.twig') }}
+
+	<div class="row">
+		<div class="col-12 col-lg-8">
+			<div class="card my-5">
+				<div class=" card-body">
+					<h2 class="card-title">{{ comment.id }}</h2>
+					<p class="text-muted fst-italic">{{ comment.author.username }} - {{ comment.rate }}/5</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<a href="{{ path('comment_index') }}" class="btn btn-secondary m-4" role="button">Retour</a>
+
+{% endblock %}
