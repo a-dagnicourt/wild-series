@@ -13,7 +13,7 @@
 {% block body %}
 	{{ include('comment/_form.html.twig')}}
 
-	<a href="{{ path('comment_index') }}" class="btn btn-secondary m-4" role="button">
+	<a href="{{ path('program_episode_show', {slug: app.request.get("programSlug"), seasonNumber: app.request.get("seasonNumber"), episodeSlug: app.request.get("episodeSlug")}) }}" class="btn btn-secondary m-4" role="button">
 		Retour
 	</a>
 {% endblock %}

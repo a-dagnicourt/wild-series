@@ -13,7 +13,7 @@
 {% block body %}
 	{{ include('season/_form.html.twig') }}
 
-	<a href="{{ path('program_index') }}" class="btn btn-secondary m-4" role="button">
+	<a href="{{ path('program_show', {slug: app.request.get("programSlug")}) }}" class="btn btn-secondary m-4" role="button">
 		Retour
 	</a>
 {% endblock %}

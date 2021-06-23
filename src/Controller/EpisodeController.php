@@ -3,23 +3,23 @@
 namespace App\Controller;
 
 use App\Entity\Episode;
+use App\Entity\Program;
+use App\Entity\Season;
 use App\Form\EpisodeType;
 use App\Repository\EpisodeRepository;
 use App\Service\Slugify;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
-/** 
- * @Route("/episodes", name="episode_")
- */
 class EpisodeController extends AbstractController
 {
     /**
-     * @Route("/", name="index", methods={"GET"})
+     * @Route("/episodes", name="episode_index", methods={"GET"})
     */
     public function index(EpisodeRepository $episodeRepository): Response
     {
@@ -29,9 +29,11 @@ class EpisodeController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="new", methods={"GET", "POST"})
+    * @Route("/programs/{programSlug}/season/{seasonNumber}/create-episode", name="episode_new", methods={"GET", "POST"})
+    * @ParamConverter("program", class="App\Entity\Program", options={"mapping": {"programSlug": "slug"}})
+    * @ParamConverter("season", class="App\Entity\Season", options={"mapping": {"seasonNumber": "number"}})
     */
-    public function new(Request $request, Slugify $slugify, MailerInterface $mailer): Response
+    public function new(Request $request, Slugify $slugify, MailerInterface $mailer, Program $program, string $programSlug, Season $season, int $seasonNumber): Response
     {
         $episode = new Episode();
         $form = $this->createForm(EpisodeType::class, $episode);
@@ -58,17 +60,19 @@ class EpisodeController extends AbstractController
 
         $mailer->send($email);
 
-            return $this->redirectToRoute('program_index');
-        }
+        return $this->redirectToRoute('program_season_show', ['slug' => $programSlug, 'seasonNumber' => $seasonNumber]);
+    }
 
         return $this->render('episode/new.html.twig', [
+            'program' => $program->getSlug($programSlug),
+            'season' => $season->getNumber($seasonNumber),
             'episode' => $episode,
             'form' => $form->createView(),
         ]);
     }
 
     /**
-     * @Route("/{slug}", name="show", methods={"GET"})
+     * @Route("/episodes/{slug}", name="episode_show", methods={"GET"})
      */
     public function show(Episode $episode): Response
     {
@@ -78,9 +82,12 @@ class EpisodeController extends AbstractController
     }
 
     /**
-     * @Route("/{slug}/edit", name="edit", methods={"GET", "POST"})
-     */
-    public function edit(Request $request, Episode $episode, Slugify $slugify): Response
+     * @Route("/programs/{programSlug}/season/{seasonNumber}/episode/{episodeSlug}/edit", name="episode_edit", methods={"GET", "POST"})
+     * @ParamConverter("program", class="App\Entity\Program", options={"mapping": {"programSlug": "slug"}})
+     * @ParamConverter("season", class="App\Entity\Season", options={"mapping": {"seasonNumber": "number"}})
+    * @ParamConverter("episode", class="App\Entity\Episode", options={"mapping": {"episodeSlug": "slug"}})
+    */
+    public function edit(Request $request, Episode $episode, Slugify $slugify, string $programSlug, int $seasonNumber): Response
     {
         $form = $this->createForm(EpisodeType::class, $episode);
         $form->handleRequest($request);
@@ -90,7 +97,7 @@ class EpisodeController extends AbstractController
             $episode->setSlug($slug);
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('program_index');
+            return $this->redirectToRoute('program_episode_show', ['slug' => $programSlug, 'seasonNumber' => $seasonNumber, 'episodeSlug' => $episode->getSlug()]);
         }
 
         return $this->render('episode/edit.html.twig', [
@@ -100,9 +107,12 @@ class EpisodeController extends AbstractController
     }
 
     /**
-     * @Route("/{slug}", name="delete", methods={"POST"})
-     */
-    public function delete(Request $request, Episode $episode): Response
+     * @Route("/programs/{programSlug}/season/{seasonNumber}/episode/{episodeSlug}", name="episode_delete", methods={"POST"})
+     * @ParamConverter("program", class="App\Entity\Program", options={"mapping": {"programSlug": "slug"}})
+     * @ParamConverter("season", class="App\Entity\Season", options={"mapping": {"seasonNumber": "number"}})
+    * @ParamConverter("episode", class="App\Entity\Episode", options={"mapping": {"episodeSlug": "slug"}})
+    */
+    public function delete(Request $request, Episode $episode, string $programSlug, int $seasonNumber): Response
     {
         if ($this->isCsrfTokenValid('delete'.$episode->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
@@ -110,6 +120,6 @@ class EpisodeController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('program_index');
+        return $this->redirectToRoute('program_season_show', ['slug' => $programSlug, 'seasonNumber' => $seasonNumber]);
     }
 }

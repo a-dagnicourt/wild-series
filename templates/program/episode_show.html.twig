@@ -7,7 +7,7 @@
 	Saison
 	{{season.number}}
 	-
-	{{episode.title}}
+	{{ episode.title }}
 {% endblock %}
 
 {% block page_title %}
@@ -23,7 +23,7 @@
 					<h2 class="card-title">{{episode.number}} - {{ episode.title }}</h2>
 					<p class="card-text">{{ episode.summary }}</p>
 					<div class="btn-group me-2 flex-wrap" role="group" aria-label="First group">
-						<a href="{{ path("episode_edit", { slug: episode.slug }) }}" class="btn btn-warning mb-5" role="button">Editer</a>
+						<a href="{{ path("episode_edit", { programSlug: program.slug, seasonNumber: season.number, episodeSlug: episode.slug }) }}" class="btn btn-warning mb-5" role="button">Editer</a>
 						{{ include('episode/_delete_form.html.twig') }}
 					</div>
 					<h4>Commentaires</h4>
@@ -52,7 +52,7 @@
 		</div>
 	</div>
 
-	<a href="{{ path('program_show', {'slug': program.slug}) }}" class="btn btn-secondary m-4" role="button">
+	<a href="{{ path('program_season_show', {'slug': program.slug, 'seasonNumber': season.number}) }}" class="btn btn-secondary m-4" role="button">
 		Retour
 	</a>
 {% endblock %}

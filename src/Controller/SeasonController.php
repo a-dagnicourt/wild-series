@@ -8,18 +8,17 @@ use App\Repository\SeasonRepository;
 use App\Service\Slugify;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
-/** 
- * @Route("/seasons", name="season_")
- */
+
 class SeasonController extends AbstractController
 {
     /**
-     * @Route("/", name="index", methods={"GET"})
+     * @Route("/seasons", name="season_index", methods={"GET"})
     */
     public function index(SeasonRepository $seasonRepository): Response
     {
@@ -29,8 +28,9 @@ class SeasonController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="new", methods={"GET", "POST"})
-    */
+     * @Route("/programs/{programSlug}/create-season", name="season_new", methods={"GET", "POST"})
+     * @ParamConverter("program", class="App\Entity\Program", options={"mapping": {"programSlug": "slug"}})
+     * */
     public function new(Request $request, Slugify $slugify, MailerInterface $mailer): Response
     {
         $season = new Season();
@@ -67,7 +67,7 @@ class SeasonController extends AbstractController
     }
 
     /**
-     * @Route("/{slug}", name="show", methods={"GET"})
+     * @Route("/seasons/{slug}", name="season_show", methods={"GET"})
      */
     public function show(Season $season): Response
     {
@@ -77,38 +77,40 @@ class SeasonController extends AbstractController
     }
 
     /**
-     * @Route("/{slug}/edit", name="edit", methods={"GET", "POST"})
+     * @Route("/programs/{programSlug}/season/{seasonNumber}/edit", name="season_edit", methods={"GET", "POST"})
+     * @ParamConverter("program", class="App\Entity\Program", options={"mapping": {"programSlug": "slug"}})
+     * @ParamConverter("season", class="App\Entity\Season", options={"mapping": {"seasonNumber": "number"}})
      */
-    public function edit(Request $request, Season $season, Slugify $slugify): Response
+    public function edit(Request $request, Season $season, string $programSlug, int $seasonNumber): Response
     {
         $form = $this->createForm(SeasonType::class, $season);
         $form->handleRequest($request);
-
+        
         if ($form->isSubmitted() && $form->isValid()) {
-            $slug = $slugify->generate($season->getNumber());
-            $season->setSlug($slug);
             $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('program_index');
+            
+            return $this->redirectToRoute('program_season_show', ['slug' => $programSlug, 'seasonNumber' => $seasonNumber]);
         }
-
+        
         return $this->render('season/edit.html.twig', [
             'season' => $season,
             'form' => $form->createView(),
         ]);
     }
-
+    
     /**
-     * @Route("/{slug}", name="delete", methods={"POST"})
+     * @Route("/programs/{programSlug}/season/{seasonNumber}", name="season_delete", methods={"POST"})
+     * @ParamConverter("program", class="App\Entity\Program", options={"mapping": {"programSlug": "slug"}})
+     * @ParamConverter("season", class="App\Entity\Season", options={"mapping": {"seasonNumber": "number"}})
      */
-    public function delete(Request $request, Season $season): Response
+    public function delete(Request $request, Season $season, string $programSlug, int $seasonNumber): Response
     {
         if ($this->isCsrfTokenValid('delete'.$season->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($season);
             $entityManager->flush();
         }
-
-        return $this->redirectToRoute('program_index');
+        
+        return $this->redirectToRoute('program_show', ['slug' => $programSlug]);
     }
 }

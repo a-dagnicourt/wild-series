@@ -34,7 +34,7 @@
 					<p class="card-text">{{ program.summary }}</p>
 					<hr/>
 					<p class="h5">Saisons</p>
-					<a href="{{ path('season_new') }}" class="btn btn-success mb-5" role="button">Créer</a>
+					<a href="{{ path('season_new', {programSlug: program.slug}) }}" class="btn btn-success mb-5" role="button">Créer</a>
 					<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
 						<div class="btn-group me-2 flex-wrap" role="group" aria-label="First group">
 							{% for season in seasons %}

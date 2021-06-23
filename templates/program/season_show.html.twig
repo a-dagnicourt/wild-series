@@ -22,8 +22,8 @@
 						{{ season.number }}</h2>
 					<p class="card-text">{{ season.year }}</p>
 					<div class="btn-group me-2 flex-wrap" role="group" aria-label="First group">
-						<a href="{{ path('episode_new') }}" class="btn btn-success mb-5" role="button">Créer Episode</a>
-						<a href="{{ path("season_edit", { slug: season.slug }) }}" class="btn btn-warning mb-5" role="button">Editer</a>
+						<a href="{{ path('episode_new', { programSlug: program.slug, seasonNumber: season.number }) }}" class="btn btn-success mb-5" role="button">Créer Episode</a>
+						<a href="{{ path("season_edit", { programSlug: program.slug, seasonNumber: season.number }) }}" class="btn btn-warning mb-5" role="button">Editer</a>
 						{{ include('season/_delete_form.html.twig') }}
 					</div>
 					<div class="accordion accordion-flush" id="episodeAccordion">
@@ -40,7 +40,7 @@
 									<div class="accordion-body">
 										<div class="btn-group me-2 flex-wrap" role="group" aria-label="First group">
 											<a href="{{ path('program_episode_show', {'slug': program.slug, 'seasonNumber': season.number, 'episodeSlug': episode.slug}) }}" class="btn btn-secondary mb-5" role="button">Voir</a>
-											<a href="{{ path('episode_edit', {'slug': episode.slug}) }}" class="btn btn-warning mb-5" role="button">Editer</a>
+											<a href="{{ path('episode_edit', { programSlug: program.slug, seasonNumber: season.number, episodeSlug: episode.slug }) }}" class="btn btn-warning mb-5" role="button">Editer</a>
 											{{ include('episode/_delete_form.html.twig') }}
 										</div>
 										<p>{{ episode.summary }}</p>
