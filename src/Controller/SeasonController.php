@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Program;
 use App\Entity\Season;
 use App\Form\SeasonType;
 use App\Repository\SeasonRepository;
@@ -67,12 +68,21 @@ class SeasonController extends AbstractController
     }
 
     /**
-     * @Route("/seasons/{slug}", name="season_show", methods={"GET"})
+     * @Route("/programs/{programSlug}/season/{seasonNumber}", name="season_show", methods={"GET"})
+     * @ParamConverter("program", class="App\Entity\Program", options={"mapping": {"programSlug": "slug"}})
+     * @ParamConverter("season", class="App\Entity\Season", options={"mapping": {"seasonNumber": "number"}})
      */
-    public function show(Season $season): Response
+    public function show(Program $program, Season $season): Response
     {
+        if (!$season) {
+            throw $this->createNotFoundException(
+                'No season id n°'.$season.' found in season\'s table.'
+            );
+        }
+
         return $this->render('season/show.html.twig', [
-            'season' => $season,
+            'program' => $program,        
+            'season' => $season
         ]);
     }
 
@@ -81,7 +91,7 @@ class SeasonController extends AbstractController
      * @ParamConverter("program", class="App\Entity\Program", options={"mapping": {"programSlug": "slug"}})
      * @ParamConverter("season", class="App\Entity\Season", options={"mapping": {"seasonNumber": "number"}})
      */
-    public function edit(Request $request, Season $season, string $programSlug, int $seasonNumber): Response
+    public function edit(Request $request, Program $program, Season $season, string $programSlug, int $seasonNumber): Response
     {
         $form = $this->createForm(SeasonType::class, $season);
         $form->handleRequest($request);
@@ -89,10 +99,11 @@ class SeasonController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
             
-            return $this->redirectToRoute('program_season_show', ['slug' => $programSlug, 'seasonNumber' => $seasonNumber]);
+            return $this->redirectToRoute('season_show', ['programSlug' => $programSlug, 'seasonNumber' => $seasonNumber]);
         }
         
         return $this->render('season/edit.html.twig', [
+            'program' => $program,        
             'season' => $season,
             'form' => $form->createView(),
         ]);
@@ -103,7 +114,7 @@ class SeasonController extends AbstractController
      * @ParamConverter("program", class="App\Entity\Program", options={"mapping": {"programSlug": "slug"}})
      * @ParamConverter("season", class="App\Entity\Season", options={"mapping": {"seasonNumber": "number"}})
      */
-    public function delete(Request $request, Season $season, string $programSlug, int $seasonNumber): Response
+    public function delete(Request $request, Season $season, string $programSlug): Response
     {
         if ($this->isCsrfTokenValid('delete'.$season->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();

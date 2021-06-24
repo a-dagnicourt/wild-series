@@ -55,7 +55,7 @@ class CommentController extends AbstractController
             $entityManager->persist($comment);
             $entityManager->flush();
             
-            return $this->redirectToRoute('program_episode_show', ['slug' => $programSlug, 'seasonNumber' => $seasonNumber, 'episodeSlug' => $episodeSlug]);
+            return $this->redirectToRoute('episode_show', ['programSlug' => $programSlug, 'seasonNumber' => $seasonNumber, 'episodeSlug' => $episodeSlug]);
         }
         
         return $this->render('comment/new.html.twig', [
@@ -81,7 +81,7 @@ class CommentController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
             
-            return $this->redirectToRoute('program_episode_show', ['slug' => $programSlug, 'seasonNumber' => $seasonNumber, 'episodeSlug' => $episodeSlug]);
+            return $this->redirectToRoute('episode_show', ['programSlug' => $programSlug, 'seasonNumber' => $seasonNumber, 'episodeSlug' => $episodeSlug]);
         }
         
         return $this->render('comment/edit.html.twig', [
@@ -108,6 +108,6 @@ class CommentController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('program_episode_show', ['slug' => $programSlug, 'seasonNumber' => $seasonNumber, 'episodeSlug' => $episodeSlug]);
+        return $this->redirectToRoute('episode_show', ['programSlug' => $programSlug, 'seasonNumber' => $seasonNumber, 'episodeSlug' => $episodeSlug]);
     }
 }

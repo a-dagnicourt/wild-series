@@ -2,17 +2,12 @@
 
 namespace App\Controller;
 
-use App\Entity\Episode;
 use App\Entity\Program;
-use App\Entity\Season;
 use App\Form\ProgramType;
-use App\Repository\EpisodeRepository;
 use App\Repository\ProgramRepository;
-use App\Repository\SeasonRepository;
 use App\Service\Slugify;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
@@ -87,41 +82,6 @@ class ProgramController extends AbstractController
     }
 
     /**
-     * @Route("/{slug}/season/{seasonNumber}", name="season_show", methods={"GET"})
-     */
-    public function seasonShow(Program $program, int $seasonNumber, SeasonRepository $seasonRepository): Response
-    {
-    if (!$program) {
-        throw $this->createNotFoundException(
-            'No program id n°'.$program.' found in program\'s table.'
-        );
-    }
-
-    return $this->render('program/season_show.html.twig', [
-        'program' => $program,        
-        'season' => $seasonRepository->findOneBy(['number' => $seasonNumber])
-    ]);
-    }
-
-    /**
-     * @Route("/{slug}/season/{seasonNumber}/episode/{episodeSlug}", name="episode_show", methods={"GET"})
-     */
-    public function episodeShow(Program $program, int $seasonNumber, string $episodeSlug, SeasonRepository $seasonRepository, EpisodeRepository $episodeRepository): Response
-    {
-    if (!$program) {
-        throw $this->createNotFoundException(
-            'No program id n°'.$program.' found in program\'s table.'
-        );
-    }
-
-    return $this->render('program/episode_show.html.twig', [
-        'program' => $program,        
-        'season' => $seasonRepository->findOneBy(['number' => $seasonNumber]),
-        'episode' => $episodeRepository->findOneBy(['slug' => $episodeSlug]),
-    ]);
-    }
-
-    /**
      * @Route("/{slug}/edit", name="edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, Program $program, Slugify $slugify): Response
@@ -134,7 +94,7 @@ class ProgramController extends AbstractController
             $program->setSlug($slug);
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('index');
+            return $this->redirectToRoute('program_index');
         }
 
         return $this->render('program/edit.html.twig', [
