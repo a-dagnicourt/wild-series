@@ -25,7 +25,6 @@ class EpisodeType extends AbstractType
             ->add('summary', TextareaType::class, [
                 'label' => 'Résumé :'
                 ])
-            ->add('season', null, ['choice_label' => 'description','label' => 'Saison :'])
         ;
     }
 

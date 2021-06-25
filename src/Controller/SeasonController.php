@@ -31,9 +31,10 @@ class SeasonController extends AbstractController
      * @Route("/programs/{programSlug}/create-season", name="season_new", methods={"GET", "POST"})
      * @ParamConverter("program", class="App\Entity\Program", options={"mapping": {"programSlug": "slug"}})
      * */
-    public function new(Request $request, MailerInterface $mailer, string $programSlug): Response
+    public function new(Request $request, MailerInterface $mailer, Program $program, string $programSlug): Response
     {
         $season = new Season();
+        $season->setProgram($program);
         $form = $this->createForm(SeasonType::class, $season);
         $form->handleRequest($request);
 
@@ -60,6 +61,7 @@ class SeasonController extends AbstractController
         }
 
         return $this->render('season/new.html.twig', [
+            'program' => $program,
             'season' => $season,
             'form' => $form->createView(),
         ]);

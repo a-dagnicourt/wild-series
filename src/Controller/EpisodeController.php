@@ -36,6 +36,7 @@ class EpisodeController extends AbstractController
     public function new(Request $request, Slugify $slugify, MailerInterface $mailer, Program $program, string $programSlug, Season $season, string $seasonSlug): Response
     {
         $episode = new Episode();
+        $episode->setSeason($season);
         $form = $this->createForm(EpisodeType::class, $episode);
         $form->handleRequest($request);
         
@@ -64,8 +65,8 @@ class EpisodeController extends AbstractController
     }
 
         return $this->render('episode/new.html.twig', [
-            'program' => $program->getSlug($programSlug),
-            'season' => $season->getSlug($seasonSlug),
+            'program' => $program,
+            'season' => $season,
             'episode' => $episode,
             'form' => $form->createView(),
         ]);

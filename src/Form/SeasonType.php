@@ -24,7 +24,6 @@ class SeasonType extends AbstractType
             ->add('description', TextareaType::class, [
                 'label' => 'Résumé :'
                 ])
-            ->add('program', null, ['choice_label' => 'title','label' => 'Série :'])
         ;
     }
 
