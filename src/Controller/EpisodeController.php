@@ -2,10 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Episode;
 use App\Entity\Program;
 use App\Entity\Season;
 use App\Form\EpisodeType;
+use App\Repository\CommentRepository;
 use App\Repository\EpisodeRepository;
 use App\Service\Slugify;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -78,7 +80,7 @@ class EpisodeController extends AbstractController
      * @ParamConverter("season", class="App\Entity\Season", options={"mapping": {"seasonSlug": "slug"}})
      * @ParamConverter("episode", class="App\Entity\Episode", options={"mapping": {"episodeSlug": "slug"}})
      */
-    public function show(Program $program, Season $season, Episode $episode): Response
+    public function show(Program $program, Season $season, Episode $episode, CommentRepository $commentRepository): Response
     {
         if (!$episode) {
             throw $this->createNotFoundException(
@@ -90,6 +92,7 @@ class EpisodeController extends AbstractController
             'program' => $program, 
             'season' => $season,
             'episode' => $episode,
+            'comments' => $commentRepository->findBy(['episode' => $episode], ['id' => 'DESC'])
         ]);
     }
 

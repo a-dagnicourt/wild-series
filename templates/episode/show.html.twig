@@ -36,12 +36,17 @@
 						<a href="{{ path("comment_new", { programSlug: program.slug, seasonSlug: season.slug, episodeSlug: episode.slug }) }}" class="btn btn-success mb-5" role="button">Nouveau</a>
 					{% endif %}
 					<ul class="list-group list-group-flush">
-						{% for comment in episode.comments %}
+						{% for comment in comments %}
 							<li class="list-group-item">
 								<p>"{{ comment.comment }}"</p>
 								<p class="text-muted fst-italic">{{ comment.author.username }}
 									-
-									{{ comment.rate }}/5</p>
+									<i class="fas fa-star" style='color:{{comment.rate > 0 ? ' gold' : ' '}}'></i>
+									<i class="fas fa-star" style='color:{{comment.rate > 1 ? ' gold' : ' '}}'></i>
+									<i class="fas fa-star" style='color:{{comment.rate > 2 ? ' gold' : ' '}}'></i>
+									<i class="fas fa-star" style='color:{{comment.rate > 3 ? ' gold' : ' '}}'></i>
+									<i class="fas fa-star" style='color:{{comment.rate > 4 ? ' gold' : ' '}}'></i>
+								</p>
 								<div class="btn-group me-2 flex-wrap" role="group" aria-label="Second group">
 									<a href="{{ path("comment_edit", { programSlug: program.slug, seasonSlug: season.slug, episodeSlug: episode.slug, commentId: comment.id }) }}" class="btn btn-warning mb-5" role="button">Editer</a>
 									{{ include('comment/_delete_form.html.twig') }}
