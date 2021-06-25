@@ -22,8 +22,8 @@
 						{{ season.number }}</h2>
 					<p class="card-text">{{ season.year }}</p>
 					<div class="btn-group me-2 flex-wrap" role="group" aria-label="First group">
-						<a href="{{ path('episode_new', { programSlug: program.slug, seasonNumber: season.number }) }}" class="btn btn-success mb-5" role="button">Créer Episode</a>
-						<a href="{{ path("season_edit", { programSlug: program.slug, seasonNumber: season.number }) }}" class="btn btn-warning mb-5" role="button">Editer</a>
+						<a href="{{ path('episode_new', { programSlug: program.slug, seasonSlug: season.slug }) }}" class="btn btn-success mb-5" role="button">Créer Episode</a>
+						<a href="{{ path("season_edit", { programSlug: program.slug, seasonSlug: season.slug }) }}" class="btn btn-warning mb-5" role="button">Editer</a>
 						{{ include('season/_delete_form.html.twig') }}
 					</div>
 					<div class="accordion accordion-flush" id="episodeAccordion">
@@ -39,8 +39,8 @@
 								<div id="flush-collapse-{{episode.id}}" class="accordion-collapse collapse" aria-labelledby="flush-heading-{{episode.id}}" data-bs-parent="#accordionFlushExample">
 									<div class="accordion-body">
 										<div class="btn-group me-2 flex-wrap" role="group" aria-label="First group">
-											<a href="{{ path('episode_show', {programSlug: program.slug, 'seasonNumber': season.number, 'episodeSlug': episode.slug}) }}" class="btn btn-secondary mb-5" role="button">Voir</a>
-											<a href="{{ path('episode_edit', { programSlug: program.slug, seasonNumber: season.number, episodeSlug: episode.slug }) }}" class="btn btn-warning mb-5" role="button">Editer</a>
+											<a href="{{ path('episode_show', {programSlug: program.slug, seasonSlug: season.slug, episodeSlug: episode.slug}) }}" class="btn btn-secondary mb-5" role="button">Voir</a>
+											<a href="{{ path('episode_edit', { programSlug: program.slug, seasonSlug: season.slug, episodeSlug: episode.slug }) }}" class="btn btn-warning mb-5" role="button">Editer</a>
 											{{ include('episode/_delete_form.html.twig') }}
 										</div>
 										<p>{{ episode.summary }}</p>

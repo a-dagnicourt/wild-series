@@ -14,7 +14,7 @@
 	{{ include('episode/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
 	{{ include('episode/_delete_form.html.twig') }}
 
-	<a href="{{ path('season_show', {programSlug: app.request.get("programSlug"),seasonNumber: app.request.get("seasonNumber")}) }}" class="btn btn-secondary m-4" role="button">
+	<a href="{{ path('season_show', {programSlug: app.request.get("programSlug"),seasonSlug: app.request.get("seasonSlug")}) }}" class="btn btn-secondary m-4" role="button">
 		Retour
 	</a>
 {% endblock %}
