@@ -25,19 +25,21 @@
 					<h2 class="card-title">{{episode.number}}
 						-
 						{{ episode.title }}</h2>
-					<p class="card-text">{{ episode.summary }}</p>
-					<div class="btn-group me-2 flex-wrap" role="group" aria-label="First group">
-						<a href="{{ path("episode_edit", { programSlug: program.slug, seasonSlug: season.slug, episodeSlug: episode.slug }) }}" class="btn btn-warning mb-5" role="button">Editer</a>
-						{{ include('episode/_delete_form.html.twig') }}
+					<div class="btn-group me-2 flex-wrap mb-3" role="group" aria-label="First group">
+						{% if is_granted("ROLE_CONTRIBUTOR") and app.user == program.owner or is_granted("ROLE_ADMIN") %}
+							<a href="{{ path("episode_edit", { programSlug: program.slug, seasonSlug: season.slug, episodeSlug: episode.slug }) }}" class="btn btn-warning" role="button">Editer</a>
+							{{ include('episode/_delete_form.html.twig') }}
+						{% endif %}
 					</div>
-					<h4>Commentaires</h4>
+					<p class="card-text">{{ episode.summary }}</p>
+					<h4 class="mt-5">Commentaires</h4>
 					<hr/>
 					{% if app.user %}
-						<a href="{{ path("comment_new", { programSlug: program.slug, seasonSlug: season.slug, episodeSlug: episode.slug }) }}" class="btn btn-success mb-5" role="button">Nouveau</a>
+						<a href="{{ path("comment_new", { programSlug: program.slug, seasonSlug: season.slug, episodeSlug: episode.slug }) }}" class="btn btn-success" role="button">Nouveau</a>
 					{% endif %}
 					<ul class="list-group list-group-flush">
 						{% for comment in comments %}
-							<li class="list-group-item">
+							<li class="list-group-item mt-2">
 								<p>"{{ comment.comment }}"</p>
 								<p class="text-muted fst-italic">{{ comment.author.username }}
 									-
@@ -47,10 +49,14 @@
 									<i class="fas fa-star" style='color:{{comment.rate > 3 ? ' gold' : ' '}}'></i>
 									<i class="fas fa-star" style='color:{{comment.rate > 4 ? ' gold' : ' '}}'></i>
 								</p>
-								<div class="btn-group me-2 flex-wrap" role="group" aria-label="Second group">
-									<a href="{{ path("comment_edit", { programSlug: program.slug, seasonSlug: season.slug, episodeSlug: episode.slug, commentId: comment.id }) }}" class="btn btn-warning mb-5" role="button">Editer</a>
-									{{ include('comment/_delete_form.html.twig') }}
-								</div>
+								<div class="btn-group me-2 flex-wrap mb-3" role="group" aria-label="Second group">
+									{% if is_granted("ROLE_CONTRIBUTOR") and app.user == comment.author %}
+										<a href="{{ path("comment_edit", { programSlug: program.slug, seasonSlug: season.slug, episodeSlug: episode.slug, commentId: comment.id }) }}" class="btn btn-warning" role="button">Editer</a>
+									{% endif %}
+									{% if is_granted("ROLE_CONTRIBUTOR") and comment.author == app.user or is_granted("ROLE_ADMIN") %}
+										{{ include('comment/_delete_form.html.twig') }}
+									</div>
+								{% endif %}
 							</li>
 						{% else %}
 							<p class="m-5">

@@ -11,7 +11,10 @@
 {% endblock %}
 
 {% block body %}
-	<a href="{{ path('actor_new') }}" class="btn btn-success mb-5" role="button">Créer</a>
+	{% if is_granted("ROLE_CONTRIBUTOR") %}
+		<a href="{{ path('actor_new') }}" class="btn btn-success mb-5" role="button">Créer</a>
+	{% endif %}
+
 	<div class="accordion accordion-flush" id="actorAccordion">
 		{% for actor in actors %}
 			<div class="accordion-item">

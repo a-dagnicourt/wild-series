@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
-
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class SeasonController extends AbstractController
 {
@@ -30,6 +30,7 @@ class SeasonController extends AbstractController
     /**
      * @Route("/programs/{programSlug}/create-season", name="season_new", methods={"GET", "POST"})
      * @ParamConverter("program", class="App\Entity\Program", options={"mapping": {"programSlug": "slug"}})
+     * @IsGranted("ROLE_CONTRIBUTOR")
      * */
     public function new(Request $request, MailerInterface $mailer, Program $program, string $programSlug): Response
     {
@@ -90,6 +91,7 @@ class SeasonController extends AbstractController
      * @Route("/programs/{programSlug}/season/{seasonSlug}/edit", name="season_edit", methods={"GET", "POST"})
      * @ParamConverter("program", class="App\Entity\Program", options={"mapping": {"programSlug": "slug"}})
      * @ParamConverter("season", class="App\Entity\Season", options={"mapping": {"seasonSlug": "slug"}})
+     * @IsGranted("ROLE_CONTRIBUTOR")
      */
     public function edit(Request $request, Program $program, Season $season, string $programSlug): Response
     {
@@ -114,6 +116,7 @@ class SeasonController extends AbstractController
      * @Route("/programs/{programSlug}/season/{seasonSlug}", name="season_delete", methods={"POST"})
      * @ParamConverter("program", class="App\Entity\Program", options={"mapping": {"programSlug": "slug"}})
      * @ParamConverter("season", class="App\Entity\Season", options={"mapping": {"seasonSlug": "slug"}})
+     * @IsGranted("ROLE_CONTRIBUTOR")
      */
     public function delete(Request $request, Season $season, string $programSlug): Response
     {

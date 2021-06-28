@@ -13,6 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class CommentController extends AbstractController
 {
@@ -41,6 +42,7 @@ class CommentController extends AbstractController
     * @ParamConverter("program", class="App\Entity\Program", options={"mapping": {"programSlug": "slug"}})
     * @ParamConverter("season", class="App\Entity\Season", options={"mapping": {"seasonSlug": "slug"}})
     * @ParamConverter("episode", class="App\Entity\Episode", options={"mapping": {"episodeSlug": "slug"}})
+    * @IsGranted("ROLE_CONTRIBUTOR")
      */
     public function new(Request $request, Program $program, string $programSlug, Season $season, string $seasonSlug, Episode $episode, string $episodeSlug): Response
     {
@@ -72,6 +74,7 @@ class CommentController extends AbstractController
      * @ParamConverter("season", class="App\Entity\Season", options={"mapping": {"seasonSlug": "slug"}})
      * @ParamConverter("episode", class="App\Entity\Episode", options={"mapping": {"episodeSlug": "slug"}})
      * @ParamConverter("comment", class="App\Entity\Comment", options={"mapping": {"commentId": "id"}})
+     * @IsGranted("ROLE_CONTRIBUTOR")
      */
     public function edit(Request $request, Comment $comment, string $programSlug, string $seasonSlug, string $episodeSlug): Response
     {
@@ -89,19 +92,17 @@ class CommentController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-
+    
     /**
-     * @Route("/comments/{id}", name="comment_delete", methods={"POST"})
-     */
-    public function delete(Request $request, Comment $comment): Response
+     * @Route("/programs/{programSlug}/season/{seasonSlug}/episode/{episodeSlug}/comments/{commentId}", name="comment_delete", methods={"POST"})
+     * @ParamConverter("program", class="App\Entity\Program", options={"mapping": {"programSlug": "slug"}})
+     * @ParamConverter("season", class="App\Entity\Season", options={"mapping": {"seasonSlug": "slug"}})
+    * @ParamConverter("episode", class="App\Entity\Episode", options={"mapping": {"episodeSlug": "slug"}})
+    * @ParamConverter("comment", class="App\Entity\Comment", options={"mapping": {"commentId": "id"}})
+    * @IsGranted("ROLE_CONTRIBUTOR")
+    */
+    public function delete(Request $request, Comment $comment, string $programSlug, string $seasonSlug, string $episodeSlug): Response
     {
-        $episode = $comment->getEpisode();
-        $episodeSlug = $episode->getSlug();
-        $season = $episode->getSeason();
-        $seasonSlug = $season->getNumber();
-        $program = $season->getProgram();
-        $programSlug = $program->getSlug();
-
         if ($this->isCsrfTokenValid('delete'.$comment->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($comment);

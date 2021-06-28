@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class EpisodeController extends AbstractController
 {
@@ -34,6 +35,7 @@ class EpisodeController extends AbstractController
     * @Route("/programs/{programSlug}/season/{seasonSlug}/create-episode", name="episode_new", methods={"GET", "POST"})
     * @ParamConverter("program", class="App\Entity\Program", options={"mapping": {"programSlug": "slug"}})
     * @ParamConverter("season", class="App\Entity\Season", options={"mapping": {"seasonSlug": "slug"}})
+    * @IsGranted("ROLE_CONTRIBUTOR")
     */
     public function new(Request $request, Slugify $slugify, MailerInterface $mailer, Program $program, string $programSlug, Season $season, string $seasonSlug): Response
     {
@@ -101,6 +103,7 @@ class EpisodeController extends AbstractController
      * @ParamConverter("program", class="App\Entity\Program", options={"mapping": {"programSlug": "slug"}})
      * @ParamConverter("season", class="App\Entity\Season", options={"mapping": {"seasonSlug": "slug"}})
     * @ParamConverter("episode", class="App\Entity\Episode", options={"mapping": {"episodeSlug": "slug"}})
+    * @IsGranted("ROLE_CONTRIBUTOR")
     */
     public function edit(Request $request, Program $program, Season $season, Episode $episode, Slugify $slugify, string $programSlug, string $seasonSlug): Response
     {
@@ -128,6 +131,7 @@ class EpisodeController extends AbstractController
      * @ParamConverter("program", class="App\Entity\Program", options={"mapping": {"programSlug": "slug"}})
      * @ParamConverter("season", class="App\Entity\Season", options={"mapping": {"seasonSlug": "slug"}})
     * @ParamConverter("episode", class="App\Entity\Episode", options={"mapping": {"episodeSlug": "slug"}})
+    * @IsGranted("ROLE_CONTRIBUTOR")
     */
     public function delete(Request $request, Episode $episode, string $programSlug, string $seasonSlug): Response
     {

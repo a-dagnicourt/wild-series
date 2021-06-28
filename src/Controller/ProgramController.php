@@ -12,6 +12,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+
 
 /** 
  * @Route("/programs", name="program_")
@@ -30,6 +33,7 @@ class ProgramController extends AbstractController
 
     /**
      * @Route("/new", name="new", methods={"GET", "POST"})
+     * @IsGranted("ROLE_CONTRIBUTOR")
     */
     public function new(Request $request, Slugify $slugify, MailerInterface $mailer) : Response
     {
@@ -41,6 +45,7 @@ class ProgramController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $slug = $slugify->generate($program->getTitle());
             $program->setSlug($slug);
+            $program->setOwner($this->getUser());
             $entityManager->persist($program);
             $entityManager->flush();
 
@@ -83,9 +88,14 @@ class ProgramController extends AbstractController
 
     /**
      * @Route("/{slug}/edit", name="edit", methods={"GET", "POST"})
+     * @IsGranted("ROLE_CONTRIBUTOR")
      */
     public function edit(Request $request, Program $program, Slugify $slugify): Response
     {
+        if (!($this->getUser() == $program->getOwner())) {
+            throw new AccessDeniedException('Only the owner can edit the program.');
+        }
+
         $form = $this->createForm(ProgramType::class, $program);
         $form->handleRequest($request);
 
@@ -105,6 +115,7 @@ class ProgramController extends AbstractController
 
     /**
      * @Route("/{slug}", name="delete", methods={"POST"})
+     * @IsGranted("ROLE_CONTRIBUTOR")
      */
     public function delete(Request $request, Program $program): Response
     {

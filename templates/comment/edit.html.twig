@@ -14,12 +14,7 @@
 	{{ include('comment/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
 	{{ include('comment/_delete_form.html.twig') }}
 
-	<a href="{{ path('episode_show', { 
-			programSlug: app.request.get("programSlug"), 
-			seasonSlug: app.request.get("seasonSlug"), 
-			episodeSlug: app.request.get("episodeSlug")
-		}) 
-		}}" class="btn btn-secondary m-4" role="button">
+	<a href="{{ path('episode_show', { programSlug: app.request.get("programSlug"), seasonSlug: app.request.get("seasonSlug"), episodeSlug: app.request.get("episodeSlug") }) }}" class="btn btn-secondary m-4" role="button">
 		Retour
 	</a>
 

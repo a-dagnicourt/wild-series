@@ -27,7 +27,7 @@
 						<span class="badge bg-light text-dark mb-4">{{ season.program.category.name }}</span>
 						<span class="badge bg-light text-dark mb-4">{{ season.year }}</span>
 						<p>{{ season.description }}</p>
-						<div class="btn-group">
+						<div class="btn-group me-2 flex-wrap mb-3" role="group" aria-label="First group">
 							<a href="{{ path("season_show", { programSlug: season.slug }) }}" class="btn btn-secondary" role="button">Voir la fiche</a>
 							<a href="{{ path("season_edit", { slug: season.slug }) }}" class="btn btn-warning" role="button">Editer</a>
 						</div>
