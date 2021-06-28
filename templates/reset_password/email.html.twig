@@ -1,0 +1,13 @@
+{% extends 'layoutEmail.html.twig' %}
+
+{% block page_title %}
+	<h1>Wild Series - Réinitialisation de mot de passe</strong>
+</h1>{% endblock %}{% block body %}
+<p>Pour réinitialiser votre mot de passe, veuillez cliquer sur le lien suivant :</p>
+
+<a href="{{ url('app_reset_password', {token: resetToken.token}) }}">{{ url('app_reset_password', {token: resetToken.token}) }}</a>
+
+<p>Ce lien expire dans
+	{{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.</p>
+
+<p>Merci et bonne série !</p>{% endblock %}

@@ -35,7 +35,9 @@
 					<h4 class="mt-5">Commentaires</h4>
 					<hr/>
 					{% if app.user %}
-						<a href="{{ path("comment_new", { programSlug: program.slug, seasonSlug: season.slug, episodeSlug: episode.slug }) }}" class="btn btn-success" role="button">Nouveau</a>
+						{% if is_granted("ROLE_CONTRIBUTOR") %}
+							<a href="{{ path("comment_new", { programSlug: program.slug, seasonSlug: season.slug, episodeSlug: episode.slug }) }}" class="btn btn-success" role="button">Nouveau</a>
+						{% endif %}
 					{% endif %}
 					<ul class="list-group list-group-flush">
 						{% for comment in comments %}

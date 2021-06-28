@@ -1,0 +1,23 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+	{{parent()}}
+	-
+			Page de profil
+{% endblock %}
+
+{% block page_title %}
+	<h1>Bienvenue,
+		{{user.app.username}}
+	</h1>
+{% endblock %}
+
+{% block body %}
+	<p>Ceci est une page de profile trèèèèès complète, attention.</p>
+	<p>Email :
+		{{user.app.email}}
+	</p>
+	<div class="mt-5">
+		<a href="{{ path('app_forgot_password_request') }}" class="btn btn-primary">Mot de passe oublié</a>
+	</div>
+{% endblock %}
