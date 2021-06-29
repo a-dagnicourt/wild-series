@@ -45,6 +45,8 @@ class CategoryController extends AbstractController
             $entityManager->persist($category);
             $entityManager->flush();
 
+            $this->addFlash('success', 'La catégorie a été créée avec succès !');
+
             return $this->redirectToRoute('category_index');
         }
         return $this->render('category/new.html.twig', [
@@ -88,6 +90,8 @@ class CategoryController extends AbstractController
             $category->setSlug($slug);
             $this->getDoctrine()->getManager()->flush();
 
+            $this->addFlash('success', 'La catégorie a été mise à jour avec succès !');
+
             return $this->redirectToRoute('category_index');
         }
 
@@ -107,6 +111,8 @@ class CategoryController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($category);
             $entityManager->flush();
+
+            $this->addFlash('danger', 'La catégorie a été supprimée avec succès !');
         }
 
         return $this->redirectToRoute('category_index');

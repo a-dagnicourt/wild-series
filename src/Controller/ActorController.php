@@ -44,6 +44,8 @@ class ActorController extends AbstractController
             $entityManager->persist($actor);
             $entityManager->flush();
 
+            $this->addFlash('success', "L'acteur a été créé avec succès !");
+
             return $this->redirectToRoute('actor_index');
         }
 
@@ -77,6 +79,8 @@ class ActorController extends AbstractController
             $actor->setSlug($slug);
             $this->getDoctrine()->getManager()->flush();
 
+            $this->addFlash('success', "L'acteur a été mis à jour avec succès !");
+
             return $this->redirectToRoute('actor_index');
         }
 
@@ -96,6 +100,8 @@ class ActorController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($actor);
             $entityManager->flush();
+
+            $this->addFlash('danger', "L'acteur a été supprimé avec succès ! (RIP †)");
         }
 
         return $this->redirectToRoute('actor_index');

@@ -14,7 +14,7 @@ class Slugify
             'ê'=>'e', 'ë'=>'e', 'ì'=>'i', 'í'=>'i', 'î'=>'i', 'ï'=>'i', 'ð'=>'o', 'ñ'=>'n', 'ò'=>'o', 'ó'=>'o',
             'ô'=>'o', 'õ'=>'o', 'ö'=>'o', 'ø'=>'o', 'ù'=>'u', 'ú'=>'u', 'û'=>'u', 'ý'=>'y', 'ý'=>'y', 'þ'=>'b',
             'ÿ'=>'y', 'Ŕ'=>'R', 'ŕ'=>'r', '@'=>'a',
-            '/' => $divider, '+' => $divider, '_' => $divider, '\'' => $divider, ' ' => $divider
+            '/' => $divider, '+' => $divider, '_' => $divider, '\'' => $divider, '.' => $divider, ' ' => $divider
         );
         $input = strtr($input, $table);
         $input = strtolower($input);

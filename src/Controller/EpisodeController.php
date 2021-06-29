@@ -65,6 +65,8 @@ class EpisodeController extends AbstractController
 
         $mailer->send($email);
 
+        $this->addFlash('success', "L'épisode a été créé avec succès !");
+
         return $this->redirectToRoute('season_show', ['programSlug' => $programSlug, 'seasonSlug' => $seasonSlug]);
     }
 
@@ -115,6 +117,8 @@ class EpisodeController extends AbstractController
             $episode->setSlug($slug.'-'.uniqid());
             $this->getDoctrine()->getManager()->flush();
 
+            $this->addFlash('success', "L'épisode a été mis à jour avec succès !");
+
             return $this->redirectToRoute('episode_show', ['programSlug' => $programSlug, 'seasonSlug' => $seasonSlug, 'episodeSlug' => $episode->getSlug()]);
         }
 
@@ -139,6 +143,8 @@ class EpisodeController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($episode);
             $entityManager->flush();
+
+            $this->addFlash('danger', "L'épisode a été supprimé avec succès !");
         }
 
         return $this->redirectToRoute('season_show', ['programSlug' => $programSlug, 'seasonSlug' => $seasonSlug]);

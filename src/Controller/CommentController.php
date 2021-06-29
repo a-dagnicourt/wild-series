@@ -56,6 +56,8 @@ class CommentController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($comment);
             $entityManager->flush();
+
+            $this->addFlash('success', "Le commentaire a été créé avec succès !");
             
             return $this->redirectToRoute('episode_show', ['programSlug' => $programSlug, 'seasonSlug' => $seasonSlug, 'episodeSlug' => $episodeSlug]);
         }
@@ -83,6 +85,8 @@ class CommentController extends AbstractController
         
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
+
+            $this->addFlash('success', 'Le commentaire a été mis à jour avec succès !');
             
             return $this->redirectToRoute('episode_show', ['programSlug' => $programSlug, 'seasonSlug' => $seasonSlug, 'episodeSlug' => $episodeSlug]);
         }
@@ -107,6 +111,8 @@ class CommentController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($comment);
             $entityManager->flush();
+
+            $this->addFlash('danger', 'Le commentaire a été supprimé avec succès !');
         }
 
         return $this->redirectToRoute('episode_show', ['programSlug' => $programSlug, 'seasonSlug' => $seasonSlug, 'episodeSlug' => $episodeSlug]);

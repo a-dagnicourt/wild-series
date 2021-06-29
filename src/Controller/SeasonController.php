@@ -57,7 +57,10 @@ class SeasonController extends AbstractController
                     'season' => $season
                 ]);
 
-        $mailer->send($email);
+            $mailer->send($email);
+
+            $this->addFlash('success', 'La saison a été créée avec succès !');
+
             return $this->redirectToRoute('program_show', ['slug' => $programSlug]);
         }
 
@@ -101,6 +104,8 @@ class SeasonController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {            
             $season->setSlug('s'.$season->getNumber().'-'.uniqid());
             $this->getDoctrine()->getManager()->flush();
+
+            $this->addFlash('success', 'La saison a été mise à jour avec succès !');
             
             return $this->redirectToRoute('season_show', ['programSlug' => $programSlug, 'seasonSlug' => $season->getSlug()]);
         }
@@ -124,6 +129,8 @@ class SeasonController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($season);
             $entityManager->flush();
+
+            $this->addFlash('danger', 'La saison a été supprimée avec succès !');
         }
         
         return $this->redirectToRoute('program_show', ['slug' => $programSlug]);
