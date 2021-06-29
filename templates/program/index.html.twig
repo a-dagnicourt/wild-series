@@ -15,7 +15,14 @@
 		<a href="{{ path('program_new') }}" class="btn btn-success mb-5" role="button">Créer</a>
 	{% endif %}
 
-	<div class="accordion accordion-flush" id="programAccordion">
+	{% form_theme searchProgramForm 'bootstrap_5_layout.html.twig' %}
+
+	{{ form_start(searchProgramForm) }}
+	{{ form_widget(searchProgramForm) }}
+	{# <button>Rechercher</button> #}
+	{{ form_end(searchProgramForm) }}
+
+	<div class="accordion accordion-flush mt-5" id="programAccordion">
 		{% for program in programs %}
 			<div class="accordion-item">
 				<h2 class="accordion-header" id="flush-heading-{{program.id}}">

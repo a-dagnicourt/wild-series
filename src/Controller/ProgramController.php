@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Program;
 use App\Form\ProgramType;
+use App\Form\SearchProgramType;
 use App\Repository\ProgramRepository;
 use App\Service\Slugify;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -22,12 +23,23 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 class ProgramController extends AbstractController
 {
     /**
-     * @Route("/", name="index", methods={"GET"})
+     * @Route("/", name="index", methods={"GET", "POST"})
     */
-    public function index(ProgramRepository $programRepository): Response
+    public function index(Request $request, ProgramRepository $programRepository): Response
     {
+        $searchProgramForm = $this->createForm(SearchProgramType::class);
+        $searchProgramForm->handleRequest($request);
+
+        if ($searchProgramForm->isSubmitted() && $searchProgramForm->isValid()) {
+            $search = $searchProgramForm->getData()['search'];
+            $programs = $programRepository->findLikeName($search);
+        } else {
+            $programs = $programRepository->findAll();
+        }
+
         return $this->render('program/index.html.twig', [
-            'programs' => $programRepository->findAll()
+            'programs' => $programs,
+            "searchProgramForm" => $searchProgramForm->createView(),
         ]);
     }
 

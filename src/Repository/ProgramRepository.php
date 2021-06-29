@@ -19,16 +19,17 @@ class ProgramRepository extends ServiceEntityRepository
         parent::__construct($registry, Program::class);
     }
 
-    /**
-     * @return Program[] Returns an array of Program objects
-     */
-    
-    public function getLatest()
+    public function findLikeName(string $name)
     {
-        return $this->createQueryBuilder('p')
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-        ;
+        $queryBuilder = $this->createQueryBuilder('p')
+            ->join('p.actors', 'a')
+            ->where('p.title LIKE :name')
+            ->orWhere('a.name LIKE :name')
+            ->setParameter('name', '%' . $name . '%')
+            ->orderBy('p.title', 'ASC')
+            ->getQuery();
+        
+        return $queryBuilder->getResult();
     }
 
     /*
