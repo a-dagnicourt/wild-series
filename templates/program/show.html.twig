@@ -34,7 +34,14 @@
 							{{ program.category.name }}
 						</span>
 					</a>
-					<h2 class="card-title">{{ program.title }}</h2>
+					<div class="d-flex align-items-center justify-content-between flex-space-between">
+						<h2 class="card-title">
+							{{ program.title }}
+						</h2>
+						<a href="{{ path('program_watchlist', {slug: program.slug}) }}">
+							<i class="{{app.user.isInWatchlist(program) ? "fas" : "far"}} fa-heart m-2 h1"></i>
+						</a>
+					</div>
 					<p class="card-text">{{ program.summary }}</p>
 					<hr/>
 					<p class="h5">Saisons</p>

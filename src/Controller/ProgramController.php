@@ -7,6 +7,7 @@ use App\Form\ProgramType;
 use App\Form\SearchProgramType;
 use App\Repository\ProgramRepository;
 use App\Service\Slugify;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,7 +26,7 @@ class ProgramController extends AbstractController
     /**
      * @Route("/", name="index", methods={"GET", "POST"})
     */
-    public function index(SessionInterface $session, Request $request, ProgramRepository $programRepository): Response
+    public function index(Request $request, ProgramRepository $programRepository): Response
     {
         $searchProgramForm = $this->createForm(SearchProgramType::class);
         $searchProgramForm->handleRequest($request);
@@ -144,5 +145,29 @@ class ProgramController extends AbstractController
         }
 
         return $this->redirectToRoute('program_index');
+    }
+
+    /**
+     * @Route("/{slug}/watchlist", name="watchlist", methods={"GET", "POST"})
+    */
+    public function addToWatchlist(Program $program, EntityManagerInterface $entityManager) : Response
+    {
+        if (!$program) {
+            throw $this->createNotFoundException(
+                'No program id n°'.$program.' found in program\'s table.'
+            );
+        }
+
+        if ($this->getUser()->isInWatchlist($program)) {
+            $this->getUser()->removeWatchlist($program);
+            $this->addFlash('danger', 'La série a été retirée de la watchlist !');
+        } else {
+            $this->getUser()->addWatchlist($program);
+            $this->addFlash('success', 'La série a bien été ajoutée à la watchlist !');
+        }
+
+        $entityManager->flush();
+
+        return $this->redirectToRoute('program_show', ['slug' => $program->getSlug()]);
     }
 }

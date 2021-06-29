@@ -3,7 +3,7 @@
 {% block title %}
 	{{parent()}}
 	-
-			Page de profil
+							Page de profil
 {% endblock %}
 
 {% block page_title %}
@@ -19,5 +19,33 @@
 	</p>
 	<div class="mt-5">
 		<a href="{{ path('app_forgot_password_request') }}" class="btn btn-primary">Mot de passe oublié</a>
+	</div>
+	<h2>Watchlist</h2>
+	{{dump(user.app.watchlist)}}
+	<div class="accordion accordion-flush mt-5" id="programAccordion">
+		{% for program in user.app.watchlist %}
+			<div class="accordion-item">
+				<h2 class="accordion-header" id="flush-heading-{{program.id}}">
+					<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-{{program.id}}" aria-expanded="false" aria-controls="flush-collapseOne">
+						{{ program.title }}
+					</button>
+				</h2>
+				<div id="flush-collapse-{{program.id}}" class="accordion-collapse collapse" aria-labelledby="flush-heading-{{program.id}}" data-bs-parent="#accordionFlushExample">
+					<div class="accordion-body">
+						<a href="{{ path("category_show", { slug: program.category.slug }) }}">
+							<span class="badge bg-light text-dark mb-4">
+								{{ program.category.name }}
+							</span>
+						</a>
+						<p>{{ program.summary }}</p>
+						<a href="{{ path("program_show", { slug: program.slug }) }}" class="btn btn-secondary m-4" role="button">Voir la fiche</a>
+					</div>
+				</div>
+			</div>
+		{% else %}
+			<p class="m-5">
+				Aucune série trouvée.
+			</p>
+		{% endfor %}
 	</div>
 {% endblock %}
