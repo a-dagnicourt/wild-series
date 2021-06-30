@@ -3,15 +3,19 @@
 namespace App\Entity;
 
 use App\Repository\ProgramRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
-
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+
 /**
 * @ORM\Entity(repositoryClass=ProgramRepository::class)
 * @UniqueEntity("title",message="La série existe déjà.")
+* @Vich\Uploadable
 */
 
 class Program
@@ -40,12 +44,29 @@ class Program
     *  )
     */
     private $summary;
+
     /**
     * @ORM\Column(type="string", length=255, nullable=true)
-    * @Assert\Length(max="255", maxMessage="La saisie {{ value }} est trop longue, le maximum est {{ limit }} caractères.")
+    * @var string
     */
     private $poster;
 
+    /**
+      * @Vich\UploadableField(mapping="poster_file", fileNameProperty="poster")
+      * @Assert\File(
+      *     maxSize = "1M",
+      *     mimeTypes = {"image/jpeg", "image/jpg", "image/png", "image/webp"},
+      * )
+      * @var File
+      */
+    private $posterFile;
+    
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     * @var \DateTime
+     */
+    private $updatedAt;
+    
     /**   
     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="programs")
     * @ORM\JoinColumn(nullable=false)
@@ -125,15 +146,38 @@ class Program
 
         return $this;
     }
-
+    
+    public function setPosterFile(File $poster = null)
+    {
+        $this->posterFile = $poster;
+        if ($poster) {
+            $this->updatedAt = new \DateTime('now');
+        }
+    }
+    
+    public function getPosterFile(): ?File
+    {
+        return $this->posterFile;
+    }
+    
+    public function setPoster($poster)
+    {
+        $this->poster = $poster;
+    }
+    
     public function getPoster(): ?string
     {
         return $this->poster;
     }
 
-    public function setPoster(?string $poster): self
+    public function getUpdatedAt(): ?\DateTimeInterface
     {
-        $this->poster = $poster;
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }

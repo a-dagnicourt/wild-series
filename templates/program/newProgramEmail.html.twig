@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block body %}
-	<img src="{{program.poster}}" alt="{{ program.title }}" type="button" class="card-img-top" style="height: 40vh; object-fit: cover; object-position: center top">
+	<img src="{{ vich_uploader_asset(program) }}" alt="{{ program.title }}" type="button" class="card-img-top" style="height: 40vh; object-fit: cover; object-position: center top">
 	<h2 class="card-title">{{ program.title }}</h2>
 	<div class="badge-container">
 		<span class="badge">{{ program.category.name }}</span>

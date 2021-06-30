@@ -12,7 +12,7 @@
 			</div>
 			<div class="carousel-inner">
 				<div class="carousel-item active" data-bs-interval="5000">
-					<img src="{{latestProgram.poster}}" class="d-block w-100" alt="{{latestProgram.title}}" style="height: 350px;object-fit: cover;filter: brightness(0.33)">
+					<img src="{{vich_uploader_asset(latestProgram)}}" class="d-block w-100" alt="{{latestProgram.title}}" style="height: 350px;object-fit: cover;filter: brightness(0.33)">
 					<div class="carousel-caption d-none d-md-block">
 						<a href="{{ path('program_show', {'slug': latestProgram.slug}) }}" class="text-decoration-none" style="color: white">
 							<h3 class="h1">{{latestProgram.title}}</h3>
@@ -22,7 +22,7 @@
 				</div>
 				{% for program in programs %}
 					<div class="carousel-item" data-bs-interval="3000">
-						<img src="{{program.poster}}" class="d-block w-100" alt="{{program.title}}" style="height: 350px;object-fit: cover;filter: brightness(0.33)">
+						<img src="{{ vich_uploader_asset(program) }}" class="d-block w-100" alt="{{program.title}}" style="height: 350px;object-fit: cover;filter: brightness(0.33)">
 						<div class="carousel-caption d-none d-md-block">
 							<a href="{{ path('program_show', {'slug': program.slug}) }}" class="text-decoration-none" style="color: white">
 								<h3 class="h1">{{program.title}}</h3>
