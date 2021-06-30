@@ -10,9 +10,15 @@
 			</button>
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-					<li class="nav-item">
-						<a class="nav-link" href="{{ path("category_index")}}">Catégories</a>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="categoryDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+							Catégories
+						</a>
+						<ul class="dropdown-menu dropdown-menu" aria-labelledby="categoryDropdown">
+							{{ render(controller('App\\Controller\\CategoryController::navbar')) }}
+						</ul>
 					</li>
+
 					<li class="nav-item">
 						<a class="nav-link" href="{{ path("program_index")}}">Séries</a>
 					</li>

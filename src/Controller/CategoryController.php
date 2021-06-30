@@ -116,5 +116,12 @@ class CategoryController extends AbstractController
         }
 
         return $this->redirectToRoute('category_index');
+    }    
+
+    public function navbar(CategoryRepository $categoryRepository ): Response
+    {
+        return $this->render('_navbar_cat.html.twig', [
+            'categories' => $categoryRepository->findBy([], ['id' => 'DESC'])
+        ]);
     }
 }
