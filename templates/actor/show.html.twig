@@ -19,7 +19,18 @@
 			<div class="card my-5">
 				<div class=" card-body">
 					<h2 class="card-title">{{ actor.name }}</h2>
-					<p class="card-text text-muted">#{{ actor.id }}</p>
+					<img src="{{ vich_uploader_asset(actor) }}" alt="{{ actor.name }}" type="button" data-bs-toggle="modal" data-bs-target="#imageModal" class="card-img-top my-3" style="height: 20rem; width: auto">
+					<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="imageModalLabel">{{ actor.name }}</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<img src="{{ vich_uploader_asset(actor) }}" alt="{{ actor.name }}" type="button" data-bs-tclass="card-img-top">
+							</div>
+						</div>
+					</div>
 					<hr/>
 					<p class="h5">Séries</p>
 					<ul class="list-group-flush">

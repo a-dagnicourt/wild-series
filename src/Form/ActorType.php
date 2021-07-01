@@ -9,6 +9,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Vich\UploaderBundle\Form\Type\VichFileType;
 
 class ActorType extends AbstractType
 {
@@ -18,6 +19,12 @@ class ActorType extends AbstractType
             ->add('name', TextType::class, [
                 'attr' => ["autofocus" => true],
                 'label' => 'Nom :'
+                ])
+            ->add('pictureFile', VichFileType::class, [
+                    'label' => 'Photo :',
+                    'required' => true,
+                    'allow_delete' => false,
+                    'download_uri' => false,
                 ])
             ->add('programs', EntityType::class, [
                 'class' => Program::class,

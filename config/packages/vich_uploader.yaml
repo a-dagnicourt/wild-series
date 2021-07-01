@@ -3,6 +3,10 @@ vich_uploader:
 
     mappings:
         poster_file:
-            uri_prefix: "%app.path.product_images%"
-            upload_destination: "%kernel.project_dir%/public%app.path.product_images%"
+            uri_prefix: "%app.path.poster_images%"
+            upload_destination: "%kernel.project_dir%/public%app.path.poster_images%"
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+        actor_picture_file:
+            uri_prefix: "%app.path.actor_images%"
+            upload_destination: "%kernel.project_dir%/public%app.path.actor_images%"
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
