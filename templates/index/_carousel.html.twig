@@ -1,42 +1,46 @@
 <h2 class="h1 mb-4">A l'affiche</h2>
-<div class="d-flex flex-column align-items-center">
-	<div id="latestProgramCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" style="width: 70vw">
-		<div class="carousel-indicators">
-			<button type="button" data-bs-target="#latestProgramCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-			<button type="button" data-bs-target="#latestProgramCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
-			<button type="button" data-bs-target="#latestProgramCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
-			<button type="button" data-bs-target="#latestProgramCarousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
-			<button type="button" data-bs-target="#latestProgramCarousel" data-bs-slide-to="4" aria-label="Slide 5"></button>
-		</div>
-		<div class="carousel-inner">
-			<div class="carousel-item active" data-bs-interval="5000">
-				<img src="{{vich_uploader_asset(latestProgram)}}" class="d-block w-100" alt="{{latestProgram.title}}" style="height: 350px;object-fit: cover;filter: brightness(0.33)">
-				<div class="carousel-caption d-none d-md-block">
-					<a href="{{ path('program_show', {'slug': latestProgram.slug}) }}" class="text-decoration-none" style="color: white">
-						<h3 class="h1">{{latestProgram.title}}</h3>
-						<p style="overflow: hidden;display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical">{{latestProgram.summary}}</p>
-					</a>
+<div class="row justify-content-center">
+	<div class="col-10">
+		<div class="d-flex flex-column align-items-center">
+			<div id="latestProgramCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" style="min-width: 70vw">
+				<div class="carousel-indicators">
+					<button type="button" data-bs-target="#latestProgramCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+					<button type="button" data-bs-target="#latestProgramCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+					<button type="button" data-bs-target="#latestProgramCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+					<button type="button" data-bs-target="#latestProgramCarousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
+					<button type="button" data-bs-target="#latestProgramCarousel" data-bs-slide-to="4" aria-label="Slide 5"></button>
 				</div>
-			</div>
-			{% for program in programs %}
-				<div class="carousel-item" data-bs-interval="3000">
-					<img src="{{ vich_uploader_asset(program) }}" class="d-block w-100" alt="{{program.title}}" style="height: 350px;object-fit: cover;filter: brightness(0.33)">
-					<div class="carousel-caption d-none d-md-block">
-						<a href="{{ path('program_show', {'slug': program.slug}) }}" class="text-decoration-none" style="color: white">
-							<h3 class="h1">{{program.title}}</h3>
-							<p style="overflow: hidden;display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical">{{program.summary}}</p>
-						</a>
+				<div class="carousel-inner">
+					<div class="carousel-item active" data-bs-interval="5000">
+						<img src="{{vich_uploader_asset(latestProgram)}}" class="d-block w-100" alt="{{latestProgram.title}}" style="height: 30vh;object-fit: cover;filter: brightness(0.33)">
+						<div class="carousel-caption d-md-block">
+							<a href="{{ path('program_show', {'slug': latestProgram.slug}) }}" class="text-decoration-none" style="color: white">
+								<h3 class="h1">{{latestProgram.title}}</h3>
+								<p style="overflow: hidden;display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical">{{latestProgram.summary}}</p>
+							</a>
+						</div>
 					</div>
+					{% for program in programs %}
+						<div class="carousel-item" data-bs-interval="3000">
+							<img src="{{ vich_uploader_asset(program) }}" class="d-block w-100" alt="{{program.title}}" style="height: 30vh;object-fit: cover;filter: brightness(0.33)">
+							<div class="carousel-caption d-md-block">
+								<a href="{{ path('program_show', {'slug': program.slug}) }}" class="text-decoration-none" style="color: white">
+									<h3 class="h1">{{program.title}}</h3>
+									<p style="overflow: hidden;display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical">{{program.summary}}</p>
+								</a>
+							</div>
+						</div>
+					{% endfor %}
 				</div>
-			{% endfor %}
+				<button class="carousel-control-prev" type="button" data-bs-target="#latestProgramCarousel" data-bs-slide="prev">
+					<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+					<span class="visually-hidden">Précédent</span>
+				</button>
+				<button class="carousel-control-next" type="button" data-bs-target="#latestProgramCarousel" data-bs-slide="next">
+					<span class="carousel-control-next-icon" aria-hidden="true"></span>
+					<span class="visually-hidden">Suivant</span>
+				</button>
+			</div>
 		</div>
-		<button class="carousel-control-prev" type="button" data-bs-target="#latestProgramCarousel" data-bs-slide="prev">
-			<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-			<span class="visually-hidden">Précédent</span>
-		</button>
-		<button class="carousel-control-next" type="button" data-bs-target="#latestProgramCarousel" data-bs-slide="next">
-			<span class="carousel-control-next-icon" aria-hidden="true"></span>
-			<span class="visually-hidden">Suivant</span>
-		</button>
 	</div>
 </div>

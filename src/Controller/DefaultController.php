@@ -14,6 +14,9 @@ class DefaultController extends AbstractController
      */
     public function index(ProgramRepository $programRepository): Response
     {
+        $user = $this->getUser()->getId();
+        $watchlist = $programRepository->findLikeViewer($user);
+
         return $this->render('index/index.html.twig', [
             'programs' => $programRepository->findBy(
                 [],
@@ -24,7 +27,8 @@ class DefaultController extends AbstractController
             'latestProgram' => $programRepository->findOneBy(
                 [],
                 ['id' => 'DESC']
-            )
+            ),
+            'watchlist' => $watchlist
         ]);
     }
 }

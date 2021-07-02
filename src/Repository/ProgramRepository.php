@@ -32,6 +32,20 @@ class ProgramRepository extends ServiceEntityRepository
         return $queryBuilder->getResult();
     }
 
+    public function findLikeViewer(int $id)
+    {
+        $queryBuilder = $this->createQueryBuilder('p')
+            ->join('p.viewers', 'v')
+            ->where('p.id LIKE :id')
+            ->orWhere('v.id LIKE :id')
+            ->setParameter('id', '%' . $id . '%')
+            ->orderBy('p.title', 'ASC')
+            ->setMaxResults(5)
+            ->getQuery();
+        
+        return $queryBuilder->getResult();
+    }
+
     /*
     public function findOneBySomeField($value): ?Program
     {
