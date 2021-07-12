@@ -2,6 +2,8 @@
 {% block body %}
 	<div class="container">
 		{% include "index/_carousel.html.twig" %}
-		{% include "index/_watchlist.html.twig" %}
+		{% if app.user %}
+			{% include "index/_watchlist.html.twig" %}
+		{% endif %}
 	</div>
 {% endblock %}

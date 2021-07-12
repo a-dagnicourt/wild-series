@@ -14,8 +14,12 @@ class DefaultController extends AbstractController
      */
     public function index(ProgramRepository $programRepository): Response
     {
-        $user = $this->getUser()->getId();
-        $watchlist = $programRepository->findLikeViewer($user);
+        if ($this->getUser()) {
+            $user = $this->getUser()->getId();
+            $watchlist = $programRepository->findLikeViewer($user);
+        } else {
+            $watchlist = null;
+        }
 
         return $this->render('index/index.html.twig', [
             'programs' => $programRepository->findBy(
